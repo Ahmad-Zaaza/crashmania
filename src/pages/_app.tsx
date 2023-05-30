@@ -1,3 +1,4 @@
+import GameContextProvider from "@/contexts/GameContext";
 import "@/stylesheets/globals.css";
 import {
   Hydrate,
@@ -39,11 +40,14 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <ThemeProvider defaultTheme="dark">
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
+            <GameContextProvider>
+
             {Component.getLayout ? (
               Component.getLayout(<Component {...pageProps} />)
-            ) : (
-              <Component {...pageProps} />
-            )}
+              ) : (
+                <Component {...pageProps} />
+                )}
+                </GameContextProvider>
           </Hydrate>
         </QueryClientProvider>
       </ThemeProvider>

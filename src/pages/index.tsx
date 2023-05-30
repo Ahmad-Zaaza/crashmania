@@ -1,9 +1,6 @@
 import Navbar from "../components/Navbar/Navbar";
 import { NextPageWithLayout } from "./_app";
 import Appbar from "../components/Appbar/Appbar";
-import { Box } from "@/components";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import MultiplierGraph from "@/components/MultiplierGraph/MultiplierGraph";
 import LeftSide from "@/components/LeftSide/LeftSide";
 import RightSide from "@/components/RightSide/RightSide";
 
@@ -15,7 +12,6 @@ const Home: NextPageWithLayout = () => {
         <LeftSide />
         <RightSide />
       </main>
-      {/* <Sidebar /> */}
       <Appbar />
     </>
   );
