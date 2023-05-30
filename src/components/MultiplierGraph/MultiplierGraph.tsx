@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Box } from "../Box";
 import { Stack } from "../Stack";
 import { Button } from "../Button";
 import { Text } from "../Text";
 
-const speedFactor = 0.05;
+const speedFactor = 0.04;
+
 const MultiplierGraph = () => {
   const [count, setCount] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [isStopped, setStopped] = useState(true);
   const indicatorRef = useRef<HTMLDivElement | null>(null);
   const requestRef = useRef<number | null>(null);
   const previousTimeRef = useRef<number | null>(null);
@@ -19,6 +20,7 @@ const MultiplierGraph = () => {
   const animate: FrameRequestCallback = time => {
     if (previousTimeRef.current && crashPointRef.current) {
       const deltaTime = time - previousTimeRef.current;
+
       if (indicatorRef.current) {
         const currentPosition = parseFloat(
           indicatorRef.current.style.insetInlineStart
@@ -27,35 +29,42 @@ const MultiplierGraph = () => {
           currentPosition +
           deltaTime * speed
         ).toFixed(2);
-        const newCount = +(newIndicatorPosition / 90).toFixed(2);
+        const newCount = +(newIndicatorPosition / 90.9).toFixed(2);
 
-        // console.log({ newPosition });
         indicatorRef.current.style.insetInlineStart = `${newIndicatorPosition}px`;
         setCount(newCount);
-        // console.log("Crashpoint:%f", crashPointRef.current);
-        console.log("count:%f", newCount);
-        // console.log(+(newCount).toFixed(2) % crashPointRef.current);
+
         if (crashPointRef.current === newCount) {
-          console.log("Reached");
-          cancelAnimationFrame(requestRef.current as number);
-          //   return;
+          stop();
+          return;
         }
       }
     }
 
-    if (running) {
-      previousTimeRef.current = time;
-      requestRef.current = requestAnimationFrame(animate);
-    }
+    previousTimeRef.current = time;
+    requestRef.current = requestAnimationFrame(animate);
   };
 
-  useEffect(() => {
-    if (running) {
-      requestRef.current = requestAnimationFrame(animate);
-    }
+  const start = () => {
+    setStopped(false);
+    animate(performance.now());
+  };
 
-    return () => cancelAnimationFrame(requestRef.current as number);
-  }, [speed, running]);
+  const stop = () => {
+    if (requestRef.current && previousTimeRef.current) {
+      setStopped(true);
+      previousTimeRef.current = 0;
+      cancelAnimationFrame(requestRef.current);
+    }
+  };
+  const reset = () => {
+    stop();
+    setCount(0);
+    if (indicatorRef.current) {
+      indicatorRef.current.style.insetInlineStart = "0px";
+      previousTimeRef.current = 0;
+    }
+  };
 
   useEffect(() => {
     const value = +(Math.random() * 10).toFixed(2);
@@ -69,28 +78,30 @@ const MultiplierGraph = () => {
       w="1000px"
     >
       <div>
-        {count.toFixed(2)} / {crashPointRef.current}
         <Stack gap={2}>
           <Button onClick={() => setSpeed(speedFactor * 1)}>1x</Button>
           <Button onClick={() => setSpeed(speedFactor * 1.5)}>2x</Button>
           <Button onClick={() => setSpeed(speedFactor * 2)}>3x</Button>
           <Button onClick={() => setSpeed(speedFactor * 2.5)}>4x</Button>
           <Button onClick={() => setSpeed(speedFactor * 3)}>5x</Button>
-          <Button onClick={() => setRunning(!running)}>
-            {running ? "Stop" : "Start"}
+          <Button onClick={isStopped ? start : stop}>
+            {isStopped ? "Start" : "Stop"}
           </Button>
+          <Button onClick={reset}>Reset</Button>
         </Stack>
       </div>
       <div className="relative overflow-hidden">
         <div
           ref={indicatorRef}
           style={{ insetInlineStart: 0 }}
-          className="absolute bottom-0 w-8 h-8 bg-green-700 rounded-full"
-        ></div>
+          className="absolute bottom-0 inline h-8 border-l border-red-700"
+        >
+          {`${count.toFixed(2)} / ${crashPointRef.current}`}
+        </div>
       </div>
       <Stack py={2}>
         {Array.from(new Array(11).keys()).map(k => (
-          <Text className="flex items-center flex-1 border" key={k}>
+          <Text className="flex items-center flex-1" key={k}>
             {k}
           </Text>
         ))}
