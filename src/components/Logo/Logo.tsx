@@ -3,7 +3,7 @@ import { Text } from "../Text";
 const Logo = () => {
   return (
     <div className="relative flex justify-center w-auto h-full mx-auto">
-      <Text>SnipCode</Text>
+      <Text>Multiplier Mania</Text>
       {/* <Image
         priority
         width={211}

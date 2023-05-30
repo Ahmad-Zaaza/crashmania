@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar/Navbar";
 import { NextPageWithLayout } from "./_app";
-import HomeFeed from "../components/HomeFeed/HomeFeed";
 import Appbar from "../components/Appbar/Appbar";
 import { Box } from "@/components";
 import Sidebar from "@/components/Sidebar/Sidebar";

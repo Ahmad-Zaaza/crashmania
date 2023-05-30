@@ -1,7 +1,6 @@
 import React from "react";
 import { Box } from "../Box";
 import { Button } from "../Button";
-import NewSnippetTrigger from "../NewSnippet/NewSnippetTrigger";
 
 const Sidebar = () => {
   return (
@@ -15,9 +14,7 @@ const Sidebar = () => {
         py={4}
         className="hidden md:block"
       >
-        <div className="px-4">
-          <NewSnippetTrigger />
-        </div>
+        
       </Box>
     </div>
   );

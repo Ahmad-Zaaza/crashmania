@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import AuthButtons from "../AuthButtons/AuthButtons";
 import Logo from "../Logo/Logo";
 import UserDropdown from "../UserDropdown/UserDropdown";
 import { Stack } from "../Stack";
@@ -23,12 +22,11 @@ function Navbar() {
       paper
       zIndex={1}
     >
-      <div className="max-w-[90px]">
+      <div className="max-w-[120px]">
         <Link href="/">
           <Logo />
         </Link>
       </div>
-      <AuthButtons />
     </Stack>
   );
 }
