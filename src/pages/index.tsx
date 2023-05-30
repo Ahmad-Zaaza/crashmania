@@ -4,17 +4,18 @@ import Appbar from "../components/Appbar/Appbar";
 import { Box } from "@/components";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import MultiplierGraph from "@/components/MultiplierGraph/MultiplierGraph";
+import LeftSide from "@/components/LeftSide/LeftSide";
+import RightSide from "@/components/RightSide/RightSide";
 
 const Home: NextPageWithLayout = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-[80px] isolate pt-8 pb-28 md:pb-16 gap-8  flex">
-        <Sidebar />
-        <main className="flex-1 max-w-[700px] mx-auto px-4">
-          <MultiplierGraph />
-        </main>
-      </div>
+      <main className="max-w-[1366px] mx-auto px-4 mt-[80px] isolate pt-8 pb-28 md:pb-16 gap-8 flex">
+        <LeftSide />
+        <RightSide />
+      </main>
+      {/* <Sidebar /> */}
       <Appbar />
     </>
   );

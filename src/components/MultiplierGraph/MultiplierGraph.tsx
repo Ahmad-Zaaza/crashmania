@@ -32,6 +32,7 @@ const MultiplierGraph = () => {
         const newCount = +(newIndicatorPosition / 90.9).toFixed(2);
 
         indicatorRef.current.style.insetInlineStart = `${newIndicatorPosition}px`;
+        indicatorRef.current.style.insetBlockEnd = `${newIndicatorPosition / 10}px`;
         setCount(newCount);
 
         if (crashPointRef.current === newCount) {
@@ -62,6 +63,7 @@ const MultiplierGraph = () => {
     setCount(0);
     if (indicatorRef.current) {
       indicatorRef.current.style.insetInlineStart = "0px";
+      indicatorRef.current.style.insetBlockEnd = "0px";
       previousTimeRef.current = 0;
     }
   };
@@ -73,9 +75,9 @@ const MultiplierGraph = () => {
   return (
     <Box
       style={{ gridTemplateRows: "auto 1fr auto" }}
-      className="grid bg-slate-500"
+      className="grid flex-1 bg-slate-500"
       h="500px"
-      w="1000px"
+      w="100%"
     >
       <div>
         <Stack gap={2}>
