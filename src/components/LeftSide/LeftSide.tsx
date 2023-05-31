@@ -11,6 +11,7 @@ import PredictionInput from "../PredictionInput/PredictionInput";
 import { useGetGame } from "@/features/game/gameQueries";
 import { useUpdatePlayerEntry } from "@/features/game/gameMutations";
 import { GameRound } from "@/lib/gameTypes";
+import NextRoundCounter from "../Counters/NextRoundCounter";
 
 const LeftSide = () => {
   const { setSettings, settings } = useGameContext();
@@ -43,6 +44,8 @@ const LeftSide = () => {
       roundId: game?.rounds[game?.currentRound as number].id as string,
     });
   };
+
+  if (!game) return null;
   return (
     <Stack
       flexDirection="column"
@@ -51,7 +54,7 @@ const LeftSide = () => {
       paper
       className="flex-1 rounded-lg"
     >
-      <Stack flexDirection="column" gap={6}>
+      <Stack className="relative" flexDirection="column" gap={6}>
         <div>
           <Text mb={4}>Enter your stake</Text>
           <StakeInput
@@ -67,9 +70,16 @@ const LeftSide = () => {
             value={prediction.toString(10)}
           />
         </div>
-        <Button onClick={onPlay} size="large">
+        <Button
+          disabled={game.rounds[game?.currentRound].state === "ongoing"}
+          onClick={onPlay}
+          size="large"
+        >
           PLAY
         </Button>
+        {game.rounds[game?.currentRound].state === "finished" && (
+          <NextRoundCounter />
+        )}
       </Stack>
       <Divider />
       {game && <CurrentRoundTable />}

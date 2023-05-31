@@ -17,6 +17,8 @@ const CurrentRoundTable = () => {
       );
     }
   }, [game]);
+
+  if (!game) return null;
   return (
     <Box>
       <Stack
@@ -33,7 +35,9 @@ const CurrentRoundTable = () => {
           <Text>{totalStake}</Text>
         </Stack>
       </Stack>
-      {game?.rounds[game?.currentRound as number].state === "pending" && (
+      {["pending", "ongoing"].includes(
+        game?.rounds[game?.currentRound as number].state
+      ) && (
         <div>
           {game.rounds[game.currentRound].entries.map(b => (
             <RoundTableRow

@@ -54,7 +54,14 @@ const MultiplierGraph = () => {
     requestRef.current = requestAnimationFrame(animate);
   };
 
-  const start = () => {
+  const start = async () => {
+    if (game) {
+      await updateRound({
+        round: game?.rounds[game.currentRound],
+        state: "ongoing",
+        rounds: game.rounds,
+      });
+    }
     setStopped(false);
     animate(performance.now());
   };
