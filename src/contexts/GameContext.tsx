@@ -1,3 +1,5 @@
+import { GameSettings, Player } from "@/lib/gameTypes";
+import { gameRoundsReducer } from "@/lib/reducers/gameRoundsReducer";
 import {
   Dispatch,
   ReactNode,
@@ -5,31 +7,26 @@ import {
   createContext,
   useContext,
   useMemo,
+  useReducer,
   useState,
 } from "react";
 
 type GameContextProps = {
-  speed: number;
-  name: string;
-  prediction: number;
-  stake: number;
-  points: number;
-  setSpeed: Dispatch<SetStateAction<number>>;
-  setPrediction: Dispatch<SetStateAction<number>>;
-  setStake: Dispatch<SetStateAction<number>>;
-  setName: Dispatch<SetStateAction<string>>;
+  settings: GameSettings;
+  players: Player[];
+  bots: Player[];
+  setPlayers: Dispatch<SetStateAction<Player[]>>;
+  setBots: Dispatch<SetStateAction<Player[]>>;
+  setSettings: Dispatch<SetStateAction<GameSettings>>;
 };
 
 export const GameContext = createContext<GameContextProps>({
-  speed: 1,
-  name: "",
-  prediction: 0,
-  points: 1000,
-  stake: 0,
-  setName: () => {},
-  setSpeed: () => {},
-  setPrediction: () => {},
-  setStake: () => {},
+  settings: { speed: 1 },
+  bots: [],
+  players: [],
+  setSettings: () => {},
+  setBots: () => {},
+  setPlayers: () => {},
 });
 
 interface IProps {
@@ -37,26 +34,23 @@ interface IProps {
 }
 
 const GameContextProvider: React.FC<IProps> = ({ children }) => {
-  const [speed, setSpeed] = useState(1);
-  const [prediction, setPrediction] = useState(0);
-  const [stake, setStake] = useState(0);
-  const [points, setPoints] = useState(0);
-  const [name, setName] = useState("");
+  const [settings, setSettings] = useState<GameSettings>({ speed: 1 });
+
+  const [gameRounds, dispatchGameRounds] = useReducer(gameRoundsReducer, []);
+
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [bots, setBots] = useState<Player[]>([]);
 
   const providerValue = useMemo(() => {
     return {
-      speed,
-      name,
-      setName,
-      setSpeed,
-      prediction,
-      setPrediction,
-      points,
-      setPoints,
-      stake,
-      setStake,
+      bots,
+      players,
+      settings,
+      setSettings,
+      setBots,
+      setPlayers,
     };
-  }, [name, points, prediction, speed, stake]);
+  }, [bots, players, settings]);
   return (
     <GameContext.Provider value={providerValue}>
       {children}
