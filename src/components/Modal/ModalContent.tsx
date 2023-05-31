@@ -55,16 +55,18 @@ const ModalContent = forwardRef<HTMLDivElement, ModalProps>(
               <Dialog.Description>{description}</Dialog.Description>
             )}
             {children}
-            <Dialog.Close asChild onClick={onClose}>
-              <Button
-                className={styles.IconButton}
-                variant="ghost"
-                size="small"
-                theme="neutral"
-              >
-                <MdClose size={20} />
-              </Button>
-            </Dialog.Close>
+            {onClose && (
+              <Dialog.Close asChild onClick={onClose}>
+                <Button
+                  className={styles.IconButton}
+                  variant="ghost"
+                  size="small"
+                  theme="neutral"
+                >
+                  <MdClose size={20} />
+                </Button>
+              </Dialog.Close>
+            )}
           </Box>
         </Dialog.Content>
       </Dialog.Portal>

@@ -3,8 +3,22 @@ import { NextPageWithLayout } from "./_app";
 import Appbar from "../components/Appbar/Appbar";
 import LeftSide from "@/components/LeftSide/LeftSide";
 import RightSide from "@/components/RightSide/RightSide";
+import { useGameContext } from "@/contexts/GameContext";
+import dynamic from "next/dynamic";
+
+const OnboardingDialog = dynamic(
+  () => import("@/components/OnboardingDialog/OnboardingDialog"),
+  {
+    ssr: false,
+  }
+);
 
 const Home: NextPageWithLayout = () => {
+  const { players } = useGameContext();
+
+  if (players.length === 0) {
+    return <OnboardingDialog />;
+  }
   return (
     <>
       <Navbar />

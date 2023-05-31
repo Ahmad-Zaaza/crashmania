@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "./utilities/utilities.css";
-
+@import url("https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap");
 @layer base {
   :root {
     --color-primary: 0deg 89% 75%;
@@ -64,7 +64,11 @@
 html,
 body {
   height: 100%;
+  font-family: cursive;
 }
+/*
+  font-family: "Odibee Sans", cursive;
+  */
 /*
     Typographic tweaks!
     4. Add accessible line-height

@@ -60,7 +60,7 @@ const GameContextProvider: React.FC<IProps> = ({ children }) => {
 
 export default GameContextProvider;
 
-export const useGameProvider = () => {
+export const useGameContext = () => {
   const context = useContext(GameContext);
 
   if (!context) {
