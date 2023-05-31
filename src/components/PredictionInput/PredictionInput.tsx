@@ -1,4 +1,4 @@
-import { FcSalesPerformance } from "react-icons/fc";
+import { TbMultiplier1X } from "react-icons/tb";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { Stack } from "../Stack";
@@ -7,10 +7,9 @@ import { KeyboardEvent } from "react";
 interface IProps {
   value: string;
   onChange: (value: string) => void;
-  playerMaxPoints: number;
 }
 
-const StakeInput = ({ onChange, value, playerMaxPoints }: IProps) => {
+const PredictionInput = ({ onChange, value }: IProps) => {
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     // Prevent entering multiple dots
     if (e.key === "." && value.includes(".")) {
@@ -33,43 +32,19 @@ const StakeInput = ({ onChange, value, playerMaxPoints }: IProps) => {
       onChange(newValue);
     }
   };
-
-  const onPresetClick = (type: "half" | "double" | "max") => {
-    switch (type) {
-      case "half":
-        if (parseFloat(value) / 2 < 10) {
-          onChange("10");
-        } else {
-          onChange((parseFloat(value) / 2).toFixed(2));
-        }
-        break;
-      case "max":
-        onChange(playerMaxPoints.toFixed(2));
-        break;
-      case "double":
-        if (parseFloat(value) * 2 > playerMaxPoints) {
-          onChange(playerMaxPoints.toFixed(2));
-        } else {
-          onChange((parseFloat(value) * 2).toFixed(2));
-        }
-        break;
-      default:
-        break;
-    }
-  };
   return (
     <Stack alignItems="center" gap={2}>
       <Input
-        inputPrefix={<FcSalesPerformance />}
+        inputPrefix={<TbMultiplier1X size={30} />}
         value={value}
         type="number"
-        step={10}
+        step={0.25}
         onKeyDown={onKeyDown}
         onChange={e => handleStakeInput(e.target.value)}
         className="flex-1"
         pattern="\d*"
       />
-      <Stack gap={2}>
+      {/* <Stack gap={2}>
         <Button
           onClick={() => onPresetClick("half")}
           theme="neutral"
@@ -93,9 +68,9 @@ const StakeInput = ({ onChange, value, playerMaxPoints }: IProps) => {
         >
           Max
         </Button>
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 };
 
-export default StakeInput;
+export default PredictionInput;
