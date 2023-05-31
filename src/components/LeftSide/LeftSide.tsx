@@ -10,7 +10,7 @@ import SpeedController from "../SpeedController/SpeedController";
 import PredictionInput from "../PredictionInput/PredictionInput";
 
 const LeftSide = () => {
-  const { players, setSettings, settings } = useGameContext();
+  const { players, setSettings, settings, rounds } = useGameContext();
   const [stake, setStake] = useState(() => {
     return parseFloat((players[0].points / 4).toFixed(2));
   });
@@ -54,7 +54,7 @@ const LeftSide = () => {
         <Button size="large">PLAY</Button>
       </Stack>
       <Divider />
-      <CurrentRoundTable />
+      {rounds.length && <CurrentRoundTable />}
       <Divider />
       <div>
         <Text mb={4}>Speed</Text>

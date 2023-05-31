@@ -7,7 +7,7 @@ import RoundTableRow from "./RoundTableRow";
 import { useGameContext } from "@/contexts/GameContext";
 
 const CurrentRoundTable = () => {
-  const { players, bots } = useGameContext();
+  const { players, bots, rounds, activeRound } = useGameContext();
   return (
     <Box>
       <Stack
@@ -16,7 +16,7 @@ const CurrentRoundTable = () => {
         justifyContent="space-between"
         p={4}
       >
-        <Text>4 Players</Text>
+        <Text>{rounds[activeRound].entries.length} Players</Text>
         <Stack alignItems="center" gap={2}>
           <FcSalesPerformance />
           <Text>15000</Text>
@@ -24,12 +24,12 @@ const CurrentRoundTable = () => {
       </Stack>
       <div>
         <RoundTableRow name="Ahmad" multiplier={1.2} stake={150} />
-        {bots.map(b => (
+        {rounds[activeRound].entries.map(b => (
           <RoundTableRow
-            key={b.id}
-            name={b.name}
-            multiplier={1.5}
-            stake={350}
+            key={b.player.id}
+            name={b.player.name}
+            multiplier={b.prediction}
+            stake={b.stake}
           />
         ))}
       </div>

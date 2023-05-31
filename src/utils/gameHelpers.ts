@@ -1,10 +1,18 @@
-import { GameRound } from "@/lib/gameTypes";
+import { GameRound, Player, RoundEntry } from "@/lib/gameTypes";
 
-export const generateBotInput = () => {
+export const generateBotActions = () => {
   const prediction = generateMultiplier();
   const stake = +(Math.random() * 10).toFixed(2);
 
   return { prediction, stake };
+};
+export const generateBotEntries = (bots: Player[]) => {
+  const botsEntries = bots.map(b => ({
+    player: b,
+    ...generateBotActions(),
+  }));
+
+  return botsEntries;
 };
 
 export const generateMultiplier = () => {
@@ -33,9 +41,70 @@ export const createRound = (): GameRound => {
     id: generateUUID(),
     state: "pending",
     multiplier: null,
-    players: [],
-    predictions: [],
+    entries: [],
   };
+};
+
+export const updateRounds = (
+  roundId: string,
+  rounds: GameRound[],
+  props: Omit<GameRound, "id">
+): GameRound[] => {
+  const roundsCopy = [...rounds];
+  const roundIndex = roundsCopy.findIndex(r => r.id === roundId);
+
+  if (roundIndex !== -1) {
+    // get the round
+    const round = rounds[roundIndex];
+    // create new round
+    const newRound = { ...round, ...props };
+    roundsCopy.splice(roundIndex, 1, newRound);
+    return roundsCopy;
+  }
+  return rounds;
+};
+
+export const addRoundEntry = (
+  roundId: string,
+  rounds: GameRound[],
+  newEntry: RoundEntry
+): GameRound[] => {
+  const roundsCopy = [...rounds];
+  const roundIndex = roundsCopy.findIndex(r => r.id === roundId);
+
+  if (roundIndex !== -1) {
+    // get the round
+    const round = rounds[roundIndex];
+    // create new round
+    const newRound: GameRound = {
+      ...round,
+      entries: [...round.entries, newEntry],
+    };
+    roundsCopy.splice(roundIndex, 1, newRound);
+    return roundsCopy;
+  }
+  return rounds;
+};
+export const addBotsEntries = (
+  roundId: string,
+  rounds: GameRound[],
+  entries: RoundEntry[]
+): GameRound[] => {
+  const roundsCopy = [...rounds];
+  const roundIndex = roundsCopy.findIndex(r => r.id === roundId);
+
+  if (roundIndex !== -1) {
+    // get the round
+    const round = rounds[roundIndex];
+    // create new round
+    const newRound: GameRound = {
+      ...round,
+      entries: [...round.entries, ...entries],
+    };
+    roundsCopy.splice(roundIndex, 1, newRound);
+    return roundsCopy;
+  }
+  return rounds;
 };
 
 export const generateUUID = () => {
