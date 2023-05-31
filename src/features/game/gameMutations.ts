@@ -1,44 +1,33 @@
 import {
   CreateGameProps,
+  CreateGameRoundProps,
   GameRound,
   IGame,
   Player,
   UpdatePlayerEntryProps,
+  UpdateScoresProps,
 } from "@/lib/gameTypes";
 import {
   createPlayer,
   createRound,
   generateBotEntries,
+  generateMultiplier,
   generateUUID,
 } from "@/utils/gameHelpers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { gameQueryKeys } from "./gameQueries";
 
-async function createGame({ noOfBots, player }: CreateGameProps) {
+async function createGame({ players }: CreateGameProps) {
   return new Promise<IGame>((res, rej) => {
-    const bots: Player[] = [];
+    const bots: Player[] = players.filter(p => p.bot);
+    const humans: Player[] = players.filter(p => !p.bot);
     const gameId = generateUUID();
-
-    for (let index = 0; index < noOfBots; index++) {
-      const bot = createPlayer({
-        points: 1000,
-        bot: true,
-        name: `CPU ${index + 1}`,
-      });
-      bots.push(bot);
-    }
-    const botsEntries = generateBotEntries(bots);
-
-    const gameRound = createRound([
-      { player, prediction: 1.5, stake: 200 },
-      ...botsEntries,
-    ]);
 
     return res({
       gameId,
-      players: [player],
+      players: humans,
       bots,
-      rounds: [gameRound],
+      rounds: [],
       currentRound: 0,
     });
   });
@@ -75,6 +64,51 @@ async function updatePlayerEntry({
     }
   });
 }
+async function createGameRound({ players }: CreateGameRoundProps) {
+  return new Promise<GameRound>(res => {
+    const bots = players.filter(p => p.bot);
+    const humans = players.filter(p => !p.bot);
+    const botsEntries = generateBotEntries(bots);
+    const humanEntry = { player: humans[0], prediction: 1.5, stake: 200 };
+    return res({
+      id: generateUUID(),
+      state: "pending",
+      multiplier: generateMultiplier(),
+      entries: [humanEntry, ...botsEntries],
+    });
+  });
+}
+
+// async function updatePlayersBalance({
+//   crashPoint,
+//   roundId,
+//   game,
+// }: UpdateScoresProps) {
+//   return new Promise<GameRound[]>((res, rej) => {
+//     const roundsCopy = [...rounds];
+//     const roundIndex = roundsCopy.findIndex(r => r.id === roundId);
+
+//     if (roundIndex !== -1) {
+//       // get the round
+//       const round = rounds[roundIndex];
+
+//       // get player entry
+//       const entriesCopies = [...round.entries];
+//       const newEntries = entriesCopies.map(entry => {
+//         return { ...entry };
+//       });
+//       entriesCopies[entryIndex].prediction = prediction;
+//       entriesCopies[entryIndex].stake = stake;
+//       // create new round
+//       const newRound: GameRound = {
+//         ...round,
+//         entries: entriesCopies,
+//       };
+//       roundsCopy.splice(roundIndex, 1, newRound);
+//       res(roundsCopy);
+//     }
+//   });
+// }
 
 export const useCreateGame = () => {
   const queryClient = useQueryClient();
@@ -84,7 +118,34 @@ export const useCreateGame = () => {
     },
   });
 };
+export const useCreateGameRound = () => {
+  const queryClient = useQueryClient();
+  return useMutation(createGameRound, {
+    onSuccess: newRound => {
+      const game = queryClient.getQueryData<IGame>(gameQueryKeys.all);
+
+      if (game) {
+        queryClient.setQueryData(gameQueryKeys.all, {
+          ...game,
+          rounds: [...game.rounds, newRound],
+        });
+      }
+    },
+  });
+};
 export const useUpdatePlayerEntry = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updatePlayerEntry, {
+    onSuccess: rounds => {
+      const game = queryClient.getQueryData(gameQueryKeys.all);
+
+      if (game) {
+        queryClient.setQueryData(gameQueryKeys.all, { ...game, rounds });
+      }
+    },
+  });
+};
+export const useUpdateScores = () => {
   const queryClient = useQueryClient();
   return useMutation(updatePlayerEntry, {
     onSuccess: rounds => {

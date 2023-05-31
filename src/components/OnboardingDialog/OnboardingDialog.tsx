@@ -8,12 +8,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { onboardingFormSchema } from "@/utils/validations";
 import { Text } from "../Text";
 import { createPlayer } from "@/utils/gameHelpers";
-import { useCreateGame } from "@/features/game/gameMutations";
+import {
+  useCreateGame,
+  useCreateGameRound,
+} from "@/features/game/gameMutations";
+import {
+  useCreateBots,
+  useCreatePlayer,
+} from "@/features/players/playersMutations";
 
 type OnboardingFormProps = Zod.infer<typeof onboardingFormSchema>;
 
 const OnboardingDialog = () => {
-  const { mutateAsync } = useCreateGame();
+  const { mutateAsync: createGame } = useCreateGame();
+  const { mutateAsync: createPlayer } = useCreatePlayer();
+  const { mutateAsync: createBots } = useCreateBots();
+  const { mutateAsync: createGameRound } = useCreateGameRound();
   const {
     register,
     handleSubmit,
@@ -24,8 +34,15 @@ const OnboardingDialog = () => {
 
   const onSubmit: SubmitHandler<OnboardingFormProps> = async data => {
     try {
-      const player = createPlayer({ bot: false, name: data.name });
-      const game = await mutateAsync({ noOfBots: 4, player });
+      const player = await createPlayer({
+        name: data.name,
+        bot: false,
+        points: 1000,
+      });
+      const bots = await createBots({ count: 2 });
+
+      const game = await createGame({ players: [player, ...bots] });
+      await createGameRound({ players: [player, ...bots] });
     } catch (error) {
       console.error("There was an error", error);
     }

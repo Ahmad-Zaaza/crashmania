@@ -23,7 +23,7 @@ export interface GameRound {
   id: string;
   state: "pending" | "finished" | "ongoing";
   entries: { player: Player; stake: number; prediction: number }[];
-  multiplier: number | null;
+  multiplier: number;
 }
 
 export interface RoundEntry {
@@ -33,27 +33,6 @@ export interface RoundEntry {
 }
 // on game start we should create a new game round.. taking our input and populating bots inputs automatically
 // and creating a multiplier
-export type GameRoundActions =
-  | {
-      type: "CREATE_ROUND";
-    }
-  | {
-      type: "JOIN_ROUND";
-      metadata: {
-        entry: RoundEntry;
-        roundId: string;
-      };
-    }
-  | {
-      type: "ADD_BOTS";
-      metadata: {
-        bots: Player[];
-        roundId: string;
-      };
-    };
-export type BotsActions = {
-  type: "CREATE_BOT";
-};
 
 export type GameSettings = {
   speed: number;
@@ -68,8 +47,7 @@ export interface IGame {
 }
 
 export interface CreateGameProps {
-  player: Player;
-  noOfBots: number;
+  players: Player[];
 }
 export interface UpdatePlayerEntryProps {
   roundId: string;
@@ -77,4 +55,18 @@ export interface UpdatePlayerEntryProps {
   playerId: string;
   prediction: number;
   stake: number;
+}
+export interface UpdateScoresProps {
+  rounds: GameRound[];
+  roundId: string;
+  crashPoint: number;
+}
+
+export interface CreatePlayerProps {
+  name: string;
+  points: number;
+  bot: boolean;
+}
+export interface CreateGameRoundProps {
+  players: Player[];
 }

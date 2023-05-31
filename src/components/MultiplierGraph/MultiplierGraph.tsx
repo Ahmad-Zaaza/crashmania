@@ -11,6 +11,7 @@ const MultiplierGraph = () => {
   const { data: game } = useGetGame();
   const [count, setCount] = useState(0);
   const [isStopped, setStopped] = useState(true);
+
   const indicatorRef = useRef<HTMLDivElement | null>(null);
   const requestRef = useRef<number | null>(null);
   const previousTimeRef = useRef<number | null>(null);
@@ -67,6 +68,8 @@ const MultiplierGraph = () => {
       previousTimeRef.current = 0;
     }
   };
+
+  const onCrash = () => {};
 
   return (
     <Box

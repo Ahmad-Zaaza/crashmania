@@ -24,16 +24,31 @@ const CurrentRoundTable = () => {
           <Text>15000</Text>
         </Stack>
       </Stack>
-      <div>
-        {game?.rounds[game?.currentRound as number].entries.map(b => (
-          <RoundTableRow
-            key={b.player.id}
-            name={b.player.name}
-            multiplier={b.prediction}
-            stake={b.stake}
-          />
-        ))}
-      </div>
+      {game?.rounds[game?.currentRound as number].state === "pending" && (
+        <div>
+          {game.rounds[game.currentRound].entries.map(b => (
+            <RoundTableRow
+              key={b.player.id}
+              name={b.player.name}
+              prediction={b.prediction}
+              stake={b.stake}
+            />
+          ))}
+        </div>
+      )}
+      {game?.rounds[game?.currentRound as number].state === "finished" && (
+        <div>
+          {game.rounds[game.currentRound].entries.map(b => (
+            <RoundTableRow
+              key={b.player.id}
+              name={b.player.name}
+              prediction={b.prediction}
+              stake={b.stake}
+              crashPoint={game?.rounds[game?.currentRound as number].multiplier}
+            />
+          ))}
+        </div>
+      )}
     </Box>
   );
 };
