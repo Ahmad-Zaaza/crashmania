@@ -56,11 +56,7 @@ export interface UpdatePlayerEntryProps {
   prediction: number;
   stake: number;
 }
-export interface UpdateScoresProps {
-  rounds: GameRound[];
-  roundId: string;
-  crashPoint: number;
-}
+
 
 export interface CreatePlayerProps {
   name: string;

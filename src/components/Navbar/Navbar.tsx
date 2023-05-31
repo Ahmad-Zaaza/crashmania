@@ -4,13 +4,14 @@ import Link from "next/link";
 import Logo from "../Logo/Logo";
 import UserDropdown from "../UserDropdown/UserDropdown";
 import { Stack } from "../Stack";
-import { useGameContext } from "@/contexts/GameContext";
 import { FcBusinessman, FcSalesPerformance } from "react-icons/fc";
 import { Text } from "../Text";
-import { useGetGame } from "@/features/game/gameQueries";
+import { useGetPlayers } from "@/features/players/playersQueries";
 
 function Navbar() {
-  const { data: game } = useGetGame();
+  const { data: players } = useGetPlayers({
+    select: players => players.filter(p => !p.bot),
+  });
   return (
     <Stack
       as="nav"
@@ -40,7 +41,7 @@ function Navbar() {
           gap={4}
         >
           <FcSalesPerformance size={25} />
-          <Text variant="titleMedium">{game?.players[0].points}</Text>
+          <Text variant="titleMedium">{players?.[0].points}</Text>
         </Stack>
         <Stack
           className="rounded-2xl bg-neutral-600"
@@ -50,7 +51,7 @@ function Navbar() {
           gap={4}
         >
           <FcBusinessman size={25} />
-          <Text variant="titleMedium">{game?.players[0].name}</Text>
+          <Text variant="titleMedium">{players?.[0].name}</Text>
         </Stack>
       </Stack>
     </Stack>

@@ -7,11 +7,13 @@ import { useGameContext } from "@/contexts/GameContext";
 import { useGetGame } from "@/features/game/gameQueries";
 import { useUpdatePlayer } from "@/features/players/playersMutations";
 import { useUpdateGameRound } from "@/features/game/gameMutations";
+import { useGetPlayers } from "@/features/players/playersQueries";
 
 const MultiplierGraph = () => {
   const { settings } = useGameContext();
   const { data: game } = useGetGame();
   const { mutateAsync: updatePlayer } = useUpdatePlayer();
+  const { data: players } = useGetPlayers();
   const { mutateAsync: updateRound } = useUpdateGameRound();
 
   const [count, setCount] = useState(0);
@@ -76,12 +78,28 @@ const MultiplierGraph = () => {
 
   const onCrash = async () => {
     stop();
-    if (game) {
+    if (game && players) {
       await updateRound({
         round: game?.rounds[game.currentRound],
         state: "finished",
         rounds: game.rounds,
       });
+      for (let index = 0; index < players.length; index++) {
+        const player = players[index];
+        const currentRound = game.rounds[game.currentRound];
+        const playerEntry = currentRound.entries.find(
+          e => e.player.id === player.id
+        );
+        if (playerEntry) {
+          let newPoints = player.points;
+          if (currentRound.multiplier >= playerEntry.prediction) {
+            newPoints += playerEntry.prediction * playerEntry.stake;
+          } else {
+            newPoints -= playerEntry.stake;
+          }
+          await updatePlayer({ player, newPoints });
+        }
+      }
     }
   };
 

@@ -43,9 +43,8 @@ export const useCreatePlayer = () => {
   const queryClient = useQueryClient();
   return useMutation(createPlayer, {
     onSuccess: player => {
-      const oldPlayers = queryClient.getQueryData<Player[]>(
-        playersQueryKeys.all
-      );
+      const oldPlayers =
+        queryClient.getQueryData<Player[]>(playersQueryKeys.all) || [];
       if (oldPlayers) {
         queryClient.setQueryData(playersQueryKeys.all, [...oldPlayers, player]);
       }
@@ -55,14 +54,14 @@ export const useCreatePlayer = () => {
 export const useUpdatePlayer = () => {
   const queryClient = useQueryClient();
   return useMutation(updatePlayer, {
-    onSuccess: player => {
+    onSuccess: newPlayer => {
       const playersCopy = queryClient.getQueryData<Player[]>(
         playersQueryKeys.all
       );
       if (playersCopy) {
-        const playerIndex = playersCopy.findIndex(p => p.id === player.id);
+        const playerIndex = playersCopy.findIndex(p => p.id === newPlayer.id);
         if (playerIndex !== -1) {
-          playersCopy.splice(playerIndex, 1, player);
+          playersCopy.splice(playerIndex, 1, newPlayer);
           queryClient.setQueryData(playersQueryKeys.all, playersCopy);
         }
       }

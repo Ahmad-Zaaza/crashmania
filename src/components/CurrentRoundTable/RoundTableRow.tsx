@@ -9,7 +9,6 @@ interface IProps {
   crashPoint?: number;
 }
 const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
-  console.log({ crashPoint });
   return (
     <Stack
       alignItems="center"
@@ -18,8 +17,8 @@ const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
       className={`${
         crashPoint
           ? crashPoint >= prediction
-            ? "text-green-700"
-            : "text-red-700"
+            ? "text-green-600"
+            : "text-red-500"
           : ""
       } odd:bg-neutral-700 even:bg-neutral-600`}
       p={4}

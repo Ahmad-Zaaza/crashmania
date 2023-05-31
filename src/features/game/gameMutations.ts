@@ -6,7 +6,6 @@ import {
   Player,
   UpdateGameRoundProps,
   UpdatePlayerEntryProps,
-  UpdateScoresProps,
 } from "@/lib/gameTypes";
 import {
   generateBotEntries,

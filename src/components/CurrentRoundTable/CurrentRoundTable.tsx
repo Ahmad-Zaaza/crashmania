@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box } from "../Box";
 import { Stack } from "../Stack";
 import { Text } from "../Text";
@@ -8,7 +8,15 @@ import { useGetGame } from "@/features/game/gameQueries";
 
 const CurrentRoundTable = () => {
   const { data: game } = useGetGame();
-  console.log({ game });
+
+  const totalStake = useMemo(() => {
+    if (game) {
+      return game.rounds[game.currentRound].entries.reduce(
+        (prev, curr) => prev + curr.stake,
+        0
+      );
+    }
+  }, [game]);
   return (
     <Box>
       <Stack
@@ -22,7 +30,7 @@ const CurrentRoundTable = () => {
         </Text>
         <Stack alignItems="center" gap={2}>
           <FcSalesPerformance />
-          <Text>15000</Text>
+          <Text>{totalStake}</Text>
         </Stack>
       </Stack>
       {game?.rounds[game?.currentRound as number].state === "pending" && (

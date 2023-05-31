@@ -1,5 +1,5 @@
 import { Player } from "@/lib/gameTypes";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export const playersQueryKeys = {
   all: [{ scope: "players" }] as const,
@@ -11,6 +11,12 @@ async function getPlayers() {
   });
 }
 
-export const useGetPlayers = () => {
-  return useQuery(playersQueryKeys.all, getPlayers);
+export const useGetPlayers = <SelectData = Player[], Error = unknown>(
+  options?: UseQueryOptions<Player[], Error, SelectData>
+) => {
+  return useQuery<Player[], Error, SelectData>(
+    playersQueryKeys.all,
+    getPlayers,
+    options
+  );
 };
