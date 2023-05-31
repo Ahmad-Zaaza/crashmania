@@ -112,6 +112,7 @@ export const useCreateGameRound = () => {
       if (game) {
         queryClient.setQueryData(gameQueryKeys.all, {
           ...game,
+          currentRound: game.rounds.length,
           rounds: [...game.rounds, newRound],
         });
       }

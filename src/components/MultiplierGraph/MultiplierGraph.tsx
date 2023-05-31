@@ -55,13 +55,14 @@ const MultiplierGraph = () => {
   };
 
   const start = async () => {
-    if (game) {
-      await updateRound({
-        round: game?.rounds[game.currentRound],
-        state: "ongoing",
-        rounds: game.rounds,
-      });
-    }
+    reset();
+    // if (game) {
+    //   await updateRound({
+    //     round: game?.rounds[game.currentRound],
+    //     state: "ongoing",
+    //     rounds: game.rounds,
+    //   });
+    // }
     setStopped(false);
     animate(performance.now());
   };
@@ -110,6 +111,13 @@ const MultiplierGraph = () => {
     }
   };
 
+  useEffect(() => {
+    if (game) {
+      if (game.rounds[game.currentRound].state === "ongoing") {
+        start();
+      }
+    }
+  }, [game]);
   return (
     <Box
       style={{ gridTemplateRows: "auto 1fr auto" }}
@@ -119,10 +127,6 @@ const MultiplierGraph = () => {
     >
       <div>
         <Stack gap={2}>
-          <Button onClick={isStopped ? start : stop}>
-            {isStopped ? "Start" : "Stop"}
-          </Button>
-          <Button onClick={reset}>Reset</Button>
           <Text>{game?.rounds[game?.currentRound as number].state}</Text>
           <Text>Total Rounds {game?.rounds.length}</Text>
           <Text>Current round {(game?.currentRound as number) + 1}</Text>

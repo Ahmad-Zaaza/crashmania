@@ -5,6 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NextPage } from "next";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
@@ -41,14 +42,14 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <GameContextProvider>
-
-            {Component.getLayout ? (
-              Component.getLayout(<Component {...pageProps} />)
+              {Component.getLayout ? (
+                Component.getLayout(<Component {...pageProps} />)
               ) : (
                 <Component {...pageProps} />
-                )}
-                </GameContextProvider>
+              )}
+            </GameContextProvider>
           </Hydrate>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </>
