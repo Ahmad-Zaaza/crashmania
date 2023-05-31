@@ -73,14 +73,14 @@ const GameContextProvider: React.FC<IProps> = ({ children }) => {
     };
   }, [activeRound, bots, gameRounds, players, settings]);
 
-  useEffect(() => {
-    if (bots.length === 0) {
-      // create 3 bots
-      dispatchBots({ type: "CREATE_BOT" });
-      dispatchBots({ type: "CREATE_BOT" });
-      dispatchBots({ type: "CREATE_BOT" });
-    }
-  }, [bots]);
+  // useEffect(() => {
+  //   if (bots.length === 0) {
+  //     // create 3 bots
+  //     dispatchBots({ type: "CREATE_BOT" });
+  //     dispatchBots({ type: "CREATE_BOT" });
+  //     dispatchBots({ type: "CREATE_BOT" });
+  //   }
+  // }, [bots]);
   return (
     <GameContext.Provider value={providerValue}>
       {children}

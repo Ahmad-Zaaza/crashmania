@@ -8,11 +8,13 @@ import { Divider } from "../Divider";
 import CurrentRoundTable from "../CurrentRoundTable/CurrentRoundTable";
 import SpeedController from "../SpeedController/SpeedController";
 import PredictionInput from "../PredictionInput/PredictionInput";
+import { useGetGame } from "@/features/game/gameQueries";
 
 const LeftSide = () => {
   const { players, setSettings, settings, rounds } = useGameContext();
+  const { data: game } = useGetGame();
   const [stake, setStake] = useState(() => {
-    return parseFloat((players[0].points / 4).toFixed(2));
+    return parseFloat(((game?.players[0].points as number) / 4).toFixed(2));
   });
   const [prediction, setPrediction] = useState(2.25);
 
@@ -39,7 +41,7 @@ const LeftSide = () => {
         <div>
           <Text mb={4}>Enter your stake</Text>
           <StakeInput
-            playerMaxPoints={players[0].points}
+            playerMaxPoints={game?.players[0].points as number}
             onChange={handleStakeInput}
             value={stake.toString(10)}
           />
@@ -54,7 +56,7 @@ const LeftSide = () => {
         <Button size="large">PLAY</Button>
       </Stack>
       <Divider />
-      {rounds.length && <CurrentRoundTable />}
+      {game && <CurrentRoundTable />}
       <Divider />
       <div>
         <Text mb={4}>Speed</Text>

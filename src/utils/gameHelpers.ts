@@ -36,12 +36,12 @@ export const createPlayer = ({
   };
 };
 
-export const createRound = (): GameRound => {
+export const createRound = (entries: RoundEntry[] = []): GameRound => {
   return {
     id: generateUUID(),
     state: "pending",
     multiplier: null,
-    entries: [],
+    entries,
   };
 };
 

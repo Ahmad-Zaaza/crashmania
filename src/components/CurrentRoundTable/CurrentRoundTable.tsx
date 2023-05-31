@@ -5,9 +5,10 @@ import { Text } from "../Text";
 import { FcSalesPerformance } from "react-icons/fc";
 import RoundTableRow from "./RoundTableRow";
 import { useGameContext } from "@/contexts/GameContext";
+import { useGetGame } from "@/features/game/gameQueries";
 
 const CurrentRoundTable = () => {
-  const { players, bots, rounds, activeRound } = useGameContext();
+  const { data: game } = useGetGame();
   return (
     <Box>
       <Stack
@@ -16,7 +17,7 @@ const CurrentRoundTable = () => {
         justifyContent="space-between"
         p={4}
       >
-        <Text>{rounds[activeRound].entries.length} Players</Text>
+        <Text>{game?.rounds[0].entries.length} Players</Text>
         <Stack alignItems="center" gap={2}>
           <FcSalesPerformance />
           <Text>15000</Text>
@@ -24,7 +25,7 @@ const CurrentRoundTable = () => {
       </Stack>
       <div>
         <RoundTableRow name="Ahmad" multiplier={1.2} stake={150} />
-        {rounds[activeRound].entries.map(b => (
+        {game?.rounds[0].entries.map(b => (
           <RoundTableRow
             key={b.player.id}
             name={b.player.name}

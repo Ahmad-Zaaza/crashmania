@@ -3,6 +3,7 @@ import { NextPageWithLayout } from "./_app";
 import Appbar from "../components/Appbar/Appbar";
 import { useGameContext } from "@/contexts/GameContext";
 import dynamic from "next/dynamic";
+import { useGetGame } from "@/features/game/gameQueries";
 
 const OnboardingDialog = dynamic(
   () => import("@/components/OnboardingDialog/OnboardingDialog"),
@@ -16,16 +17,15 @@ const GameScreen = dynamic(() => import("@/components/GameScreen/GameScreen"), {
 
 const Home: NextPageWithLayout = () => {
   const { players } = useGameContext();
+  const { data: game } = useGetGame();
 
-  if (players.length === 0) {
+  if (!game) {
     return <OnboardingDialog />;
   }
   return (
     <>
       <Navbar />
-
       <GameScreen />
-
       <Appbar />
     </>
   );

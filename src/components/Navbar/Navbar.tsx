@@ -7,9 +7,10 @@ import { Stack } from "../Stack";
 import { useGameContext } from "@/contexts/GameContext";
 import { FcBusinessman, FcSalesPerformance } from "react-icons/fc";
 import { Text } from "../Text";
+import { useGetGame } from "@/features/game/gameQueries";
 
 function Navbar() {
-  const { players } = useGameContext();
+  const { data: game } = useGetGame();
   return (
     <Stack
       as="nav"
@@ -39,7 +40,7 @@ function Navbar() {
           gap={4}
         >
           <FcSalesPerformance size={25} />
-          <Text variant="titleMedium">{players[0].points}</Text>
+          <Text variant="titleMedium">{game?.players[0].points}</Text>
         </Stack>
         <Stack
           className="rounded-2xl bg-neutral-600"
@@ -49,7 +50,7 @@ function Navbar() {
           gap={4}
         >
           <FcBusinessman size={25} />
-          <Text variant="titleMedium">{players[0].name}</Text>
+          <Text variant="titleMedium">{game?.players[0].name}</Text>
         </Stack>
       </Stack>
     </Stack>

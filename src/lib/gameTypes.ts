@@ -58,3 +58,15 @@ export type BotsActions = {
 export type GameSettings = {
   speed: number;
 };
+
+export interface IGame {
+  gameId: string;
+  rounds: GameRound[];
+  players: Player[];
+  bots: Player[];
+}
+
+export interface CreateGameProps {
+  player: Player;
+  noOfBots: number;
+}
