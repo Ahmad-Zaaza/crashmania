@@ -9,10 +9,15 @@ import CurrentRoundTable from "../CurrentRoundTable/CurrentRoundTable";
 import SpeedController from "../SpeedController/SpeedController";
 import PredictionInput from "../PredictionInput/PredictionInput";
 import { useGetGame } from "@/features/game/gameQueries";
+import { useUpdatePlayerEntry } from "@/features/game/gameMutations";
+import { GameRound } from "@/lib/gameTypes";
 
 const LeftSide = () => {
-  const { players, setSettings, settings, rounds } = useGameContext();
+  const { setSettings, settings } = useGameContext();
   const { data: game } = useGetGame();
+
+  const { mutateAsync: updatePlayerEntry } = useUpdatePlayerEntry();
+
   const [stake, setStake] = useState(() => {
     return parseFloat(((game?.players[0].points as number) / 4).toFixed(2));
   });
@@ -27,6 +32,16 @@ const LeftSide = () => {
 
   const handleSpeedChange = (speed: number) => {
     setSettings(prev => ({ ...prev, speed }));
+  };
+
+  const onPlay = async () => {
+    await updatePlayerEntry({
+      playerId: game?.players[0].id as string,
+      prediction,
+      stake,
+      rounds: game?.rounds as GameRound[],
+      roundId: game?.rounds[0].id as string,
+    });
   };
 
   return (
@@ -53,7 +68,9 @@ const LeftSide = () => {
             value={prediction.toString(10)}
           />
         </div>
-        <Button size="large">PLAY</Button>
+        <Button onClick={onPlay} size="large">
+          PLAY
+        </Button>
       </Stack>
       <Divider />
       {game && <CurrentRoundTable />}

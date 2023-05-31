@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import RightSide from "../RightSide/RightSide";
 import LeftSide from "../LeftSide/LeftSide";
-import { useGameContext } from "@/contexts/GameContext";
 
 const GameScreen = () => {
   // const { dispatchGameRounds, bots, rounds, activeRound } = useGameContext();

@@ -4,7 +4,6 @@ import { Stack } from "../Stack";
 import { Text } from "../Text";
 import { FcSalesPerformance } from "react-icons/fc";
 import RoundTableRow from "./RoundTableRow";
-import { useGameContext } from "@/contexts/GameContext";
 import { useGetGame } from "@/features/game/gameQueries";
 
 const CurrentRoundTable = () => {
@@ -24,7 +23,6 @@ const CurrentRoundTable = () => {
         </Stack>
       </Stack>
       <div>
-        <RoundTableRow name="Ahmad" multiplier={1.2} stake={150} />
         {game?.rounds[0].entries.map(b => (
           <RoundTableRow
             key={b.player.id}

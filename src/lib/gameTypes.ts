@@ -70,3 +70,10 @@ export interface CreateGameProps {
   player: Player;
   noOfBots: number;
 }
+export interface UpdatePlayerEntryProps {
+  roundId: string;
+  rounds: GameRound[];
+  playerId: string;
+  prediction: number;
+  stake: number;
+}
