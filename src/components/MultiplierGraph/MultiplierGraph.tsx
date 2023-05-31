@@ -3,10 +3,10 @@ import { Box } from "../Box";
 import { Stack } from "../Stack";
 import { Button } from "../Button";
 import { Text } from "../Text";
-
-const speedFactor = 0.04;
+import { useGameContext } from "@/contexts/GameContext";
 
 const MultiplierGraph = () => {
+  const { settings } = useGameContext();
   const [count, setCount] = useState(0);
   const [isStopped, setStopped] = useState(true);
   const indicatorRef = useRef<HTMLDivElement | null>(null);
@@ -14,8 +14,6 @@ const MultiplierGraph = () => {
   const previousTimeRef = useRef<number | null>(null);
 
   const crashPointRef = useRef<number | null>(null);
-
-  const [speed, setSpeed] = useState(speedFactor);
 
   const animate: FrameRequestCallback = time => {
     if (previousTimeRef.current && crashPointRef.current) {
@@ -27,12 +25,14 @@ const MultiplierGraph = () => {
         );
         const newIndicatorPosition = +(
           currentPosition +
-          deltaTime * speed
+          deltaTime * settings.speed * 0.04
         ).toFixed(2);
         const newCount = +(newIndicatorPosition / 90.9).toFixed(2);
 
         indicatorRef.current.style.insetInlineStart = `${newIndicatorPosition}px`;
-        indicatorRef.current.style.insetBlockEnd = `${newIndicatorPosition / 10}px`;
+        indicatorRef.current.style.insetBlockEnd = `${
+          newIndicatorPosition / 10
+        }px`;
         setCount(newCount);
 
         if (crashPointRef.current === newCount) {
@@ -81,11 +81,6 @@ const MultiplierGraph = () => {
     >
       <div>
         <Stack gap={2}>
-          <Button onClick={() => setSpeed(speedFactor * 1)}>1x</Button>
-          <Button onClick={() => setSpeed(speedFactor * 1.5)}>2x</Button>
-          <Button onClick={() => setSpeed(speedFactor * 2)}>3x</Button>
-          <Button onClick={() => setSpeed(speedFactor * 2.5)}>4x</Button>
-          <Button onClick={() => setSpeed(speedFactor * 3)}>5x</Button>
           <Button onClick={isStopped ? start : stop}>
             {isStopped ? "Start" : "Stop"}
           </Button>
