@@ -19,32 +19,6 @@ export const generateMultiplier = () => {
   return +(Math.random() * 10).toFixed(2);
 };
 
-export const createPlayer = ({
-  bot = false,
-  name,
-  points = 1000,
-}: {
-  name: string;
-  bot: boolean;
-  points?: number;
-}) => {
-  return {
-    id: generateUUID(),
-    name,
-    points,
-    bot,
-  };
-};
-
-export const createRound = (entries: RoundEntry[] = []): GameRound => {
-  return {
-    id: generateUUID(),
-    state: "pending",
-    multiplier: generateMultiplier(),
-    entries,
-  };
-};
-
 export const updateRounds = (
   roundId: string,
   rounds: GameRound[],

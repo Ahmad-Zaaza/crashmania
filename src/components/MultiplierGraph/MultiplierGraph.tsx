@@ -5,10 +5,15 @@ import { Button } from "../Button";
 import { Text } from "../Text";
 import { useGameContext } from "@/contexts/GameContext";
 import { useGetGame } from "@/features/game/gameQueries";
+import { useUpdatePlayer } from "@/features/players/playersMutations";
+import { useUpdateGameRound } from "@/features/game/gameMutations";
 
 const MultiplierGraph = () => {
   const { settings } = useGameContext();
   const { data: game } = useGetGame();
+  const { mutateAsync: updatePlayer } = useUpdatePlayer();
+  const { mutateAsync: updateRound } = useUpdateGameRound();
+
   const [count, setCount] = useState(0);
   const [isStopped, setStopped] = useState(true);
 
@@ -37,7 +42,7 @@ const MultiplierGraph = () => {
         setCount(newCount);
 
         if (game?.rounds[game.currentRound].multiplier === newCount) {
-          stop();
+          onCrash();
           return;
         }
       }
@@ -69,7 +74,16 @@ const MultiplierGraph = () => {
     }
   };
 
-  const onCrash = () => {};
+  const onCrash = async () => {
+    stop();
+    if (game) {
+      await updateRound({
+        round: game?.rounds[game.currentRound],
+        state: "finished",
+        rounds: game.rounds,
+      });
+    }
+  };
 
   return (
     <Box
@@ -84,6 +98,9 @@ const MultiplierGraph = () => {
             {isStopped ? "Start" : "Stop"}
           </Button>
           <Button onClick={reset}>Reset</Button>
+          <Text>{game?.rounds[game?.currentRound as number].state}</Text>
+          <Text>Total Rounds {game?.rounds.length}</Text>
+          <Text>Current round {(game?.currentRound as number) + 1}</Text>
         </Stack>
       </div>
       <div className="relative overflow-hidden">

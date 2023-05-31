@@ -8,6 +8,7 @@ import { useGetGame } from "@/features/game/gameQueries";
 
 const CurrentRoundTable = () => {
   const { data: game } = useGetGame();
+  console.log({ game });
   return (
     <Box>
       <Stack

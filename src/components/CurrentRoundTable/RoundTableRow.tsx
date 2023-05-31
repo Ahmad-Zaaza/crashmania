@@ -9,6 +9,7 @@ interface IProps {
   crashPoint?: number;
 }
 const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
+  console.log({ crashPoint });
   return (
     <Stack
       alignItems="center"

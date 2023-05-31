@@ -43,7 +43,7 @@ const LeftSide = () => {
       roundId: game?.rounds[game?.currentRound as number].id as string,
     });
   };
-
+  console.log({ game });
   return (
     <Stack
       flexDirection="column"

@@ -70,3 +70,8 @@ export interface CreatePlayerProps {
 export interface CreateGameRoundProps {
   players: Player[];
 }
+export interface UpdateGameRoundProps {
+  round: GameRound;
+  rounds: GameRound[];
+  state: GameRound["state"];
+}

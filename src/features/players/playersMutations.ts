@@ -27,6 +27,18 @@ async function createBots({ count }: { count: number }) {
     return res(bots);
   });
 }
+
+async function updatePlayer({
+  player,
+  newPoints,
+}: {
+  player: Player;
+  newPoints: number;
+}) {
+  return new Promise<Player>(res => {
+    return res({ ...player, points: newPoints });
+  });
+}
 export const useCreatePlayer = () => {
   const queryClient = useQueryClient();
   return useMutation(createPlayer, {
@@ -40,6 +52,24 @@ export const useCreatePlayer = () => {
     },
   });
 };
+export const useUpdatePlayer = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updatePlayer, {
+    onSuccess: player => {
+      const playersCopy = queryClient.getQueryData<Player[]>(
+        playersQueryKeys.all
+      );
+      if (playersCopy) {
+        const playerIndex = playersCopy.findIndex(p => p.id === player.id);
+        if (playerIndex !== -1) {
+          playersCopy.splice(playerIndex, 1, player);
+          queryClient.setQueryData(playersQueryKeys.all, playersCopy);
+        }
+      }
+    },
+  });
+};
+
 export const useCreateBots = () => {
   const queryClient = useQueryClient();
   return useMutation(createBots, {

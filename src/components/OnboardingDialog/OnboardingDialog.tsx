@@ -7,7 +7,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { onboardingFormSchema } from "@/utils/validations";
 import { Text } from "../Text";
-import { createPlayer } from "@/utils/gameHelpers";
 import {
   useCreateGame,
   useCreateGameRound,
@@ -41,7 +40,7 @@ const OnboardingDialog = () => {
       });
       const bots = await createBots({ count: 2 });
 
-      const game = await createGame({ players: [player, ...bots] });
+      await createGame({ players: [player, ...bots] });
       await createGameRound({ players: [player, ...bots] });
     } catch (error) {
       console.error("There was an error", error);
