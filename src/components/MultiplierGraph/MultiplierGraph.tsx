@@ -4,19 +4,19 @@ import { Stack } from "../Stack";
 import { Button } from "../Button";
 import { Text } from "../Text";
 import { useGameContext } from "@/contexts/GameContext";
+import { useGetGame } from "@/features/game/gameQueries";
 
 const MultiplierGraph = () => {
   const { settings } = useGameContext();
+  const { data: game } = useGetGame();
   const [count, setCount] = useState(0);
   const [isStopped, setStopped] = useState(true);
   const indicatorRef = useRef<HTMLDivElement | null>(null);
   const requestRef = useRef<number | null>(null);
   const previousTimeRef = useRef<number | null>(null);
 
-  const crashPointRef = useRef<number | null>(null);
-
   const animate: FrameRequestCallback = time => {
-    if (previousTimeRef.current && crashPointRef.current) {
+    if (previousTimeRef.current && game?.rounds[game.currentRound].multiplier) {
       const deltaTime = time - previousTimeRef.current;
 
       if (indicatorRef.current) {
@@ -35,7 +35,7 @@ const MultiplierGraph = () => {
         }px`;
         setCount(newCount);
 
-        if (crashPointRef.current === newCount) {
+        if (game?.rounds[game.currentRound].multiplier === newCount) {
           stop();
           return;
         }
@@ -68,10 +68,6 @@ const MultiplierGraph = () => {
     }
   };
 
-  useEffect(() => {
-    const value = +(Math.random() * 10).toFixed(2);
-    crashPointRef.current = value;
-  }, []);
   return (
     <Box
       style={{ gridTemplateRows: "auto 1fr auto" }}
@@ -93,7 +89,9 @@ const MultiplierGraph = () => {
           style={{ insetInlineStart: 0 }}
           className="absolute bottom-0 inline h-8 border-l border-red-700"
         >
-          {`${count.toFixed(2)} / ${crashPointRef.current}`}
+          {`${count.toFixed(2)} / ${
+            game?.rounds[game.currentRound].multiplier
+          }`}
         </div>
       </div>
       <Stack py={2}>

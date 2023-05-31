@@ -34,7 +34,13 @@ async function createGame({ noOfBots, player }: CreateGameProps) {
       ...botsEntries,
     ]);
 
-    return res({ gameId, players: [player], bots, rounds: [gameRound] });
+    return res({
+      gameId,
+      players: [player],
+      bots,
+      rounds: [gameRound],
+      currentRound: 0,
+    });
   });
 }
 async function updatePlayerEntry({

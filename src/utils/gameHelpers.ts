@@ -40,7 +40,7 @@ export const createRound = (entries: RoundEntry[] = []): GameRound => {
   return {
     id: generateUUID(),
     state: "pending",
-    multiplier: null,
+    multiplier: generateMultiplier(),
     entries,
   };
 };

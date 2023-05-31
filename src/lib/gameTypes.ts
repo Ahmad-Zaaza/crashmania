@@ -64,6 +64,7 @@ export interface IGame {
   rounds: GameRound[];
   players: Player[];
   bots: Player[];
+  currentRound: number;
 }
 
 export interface CreateGameProps {

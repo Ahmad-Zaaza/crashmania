@@ -16,14 +16,16 @@ const CurrentRoundTable = () => {
         justifyContent="space-between"
         p={4}
       >
-        <Text>{game?.rounds[0].entries.length} Players</Text>
+        <Text>
+          {game?.rounds[game?.currentRound as number].entries.length} Players
+        </Text>
         <Stack alignItems="center" gap={2}>
           <FcSalesPerformance />
           <Text>15000</Text>
         </Stack>
       </Stack>
       <div>
-        {game?.rounds[0].entries.map(b => (
+        {game?.rounds[game?.currentRound as number].entries.map(b => (
           <RoundTableRow
             key={b.player.id}
             name={b.player.name}

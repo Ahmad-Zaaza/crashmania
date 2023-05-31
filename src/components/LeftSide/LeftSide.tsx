@@ -40,7 +40,7 @@ const LeftSide = () => {
       prediction,
       stake,
       rounds: game?.rounds as GameRound[],
-      roundId: game?.rounds[0].id as string,
+      roundId: game?.rounds[game?.currentRound as number].id as string,
     });
   };
 
