@@ -4,9 +4,12 @@ import Link from "next/link";
 import Logo from "../Logo/Logo";
 import UserDropdown from "../UserDropdown/UserDropdown";
 import { Stack } from "../Stack";
+import { useGameContext } from "@/contexts/GameContext";
+import { FcBusinessman, FcSalesPerformance } from "react-icons/fc";
+import { Text } from "../Text";
 
 function Navbar() {
-  // const { data } = useUser();
+  const { players } = useGameContext();
   return (
     <Stack
       as="nav"
@@ -27,6 +30,28 @@ function Navbar() {
           <Logo />
         </Link>
       </div>
+      <Stack gap={4}>
+        <Stack
+          className="rounded-2xl bg-neutral-600"
+          alignItems="center"
+          paper
+          p={2}
+          gap={4}
+        >
+          <FcSalesPerformance size={25} />
+          <Text variant="titleMedium">{players[0].points}</Text>
+        </Stack>
+        <Stack
+          className="rounded-2xl bg-neutral-600"
+          alignItems="center"
+          paper
+          p={2}
+          gap={4}
+        >
+          <FcBusinessman size={25} />
+          <Text variant="titleMedium">{players[0].name}</Text>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }
