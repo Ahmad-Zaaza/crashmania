@@ -20,15 +20,20 @@ export type Player = {
  */
 
 export interface GameRound {
+  id: string;
+  state: "pending" | "finished" | "ongoing";
   players: Player[];
   predictions: { playerName: string; stake: number; prediction: number }[];
-  multiplier: number;
+  multiplier: number | null;
 }
 // on game start we should create a new game round.. taking our input and populating bots inputs automatically
 // and creating a multiplier
 export type GameRoundActions = {
   type: "CREATE_ROUND";
   metadata: GameRound;
+};
+export type BotsActions = {
+  type: "CREATE_BOT";
 };
 
 export type GameSettings = {

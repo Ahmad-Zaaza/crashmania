@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StakeInput from "../StakeInput/StakeInput";
 import { useGameContext } from "@/contexts/GameContext";
 import { Text } from "../Text";
@@ -26,6 +26,7 @@ const LeftSide = () => {
   const handleSpeedChange = (speed: number) => {
     setSettings(prev => ({ ...prev, speed }));
   };
+
   return (
     <Stack
       flexDirection="column"
