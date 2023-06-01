@@ -12,25 +12,25 @@ const LeftSide = () => {
 
   if (!game) return null;
   return (
-    <div className="grid gap-6 rounded-lg grid-cols-[repeat(auto-fill,minmax(350px,_1fr))]">
-      <div>
+    <div className="grid gap-6 rounded-lg grid-cols-[repeat(auto-fit,minmax(400px,_1fr))]">
+      {/* <div>
         <Stack mb={4} gap={2} alignItems="center">
           <FcSettings size={25} className="text-primary" />
           <Text>Game settings</Text>
         </Stack>
         <SpeedController />
-      </div>
+      </div> */}
       <div>
         <Stack mb={4} gap={2} alignItems="center">
           <GiAmericanShield size={25} className="text-primary" />
-          <Text>Current Round</Text>
+          <Text className="font-bold">Current Round</Text>
         </Stack>
         <CurrentRoundTable />
       </div>
       <div>
         <Stack mb={4} gap={2} alignItems="center">
           <GiTrophy size={25} className="text-yellow-400" />
-          <Text>Rankings</Text>
+          <Text className="font-bold">Rankings</Text>
         </Stack>
         <GameRankingsTable />
       </div>

@@ -35,33 +35,55 @@ const CurrentRoundTable = () => {
           <Text>{totalStake?.toFixed(2)}</Text>
         </Stack>
       </Stack>
-      {["pending", "ongoing"].includes(
-        game?.rounds[game?.currentRound as number].state
-      ) && (
-        <div>
-          {game.rounds[game.currentRound].entries.map(b => (
-            <RoundTableRow
-              key={b.player.id}
-              name={b.player.name}
-              prediction={b.prediction}
-              stake={b.stake}
-            />
-          ))}
-        </div>
-      )}
-      {game?.rounds[game?.currentRound as number].state === "finished" && (
-        <div>
-          {game.rounds[game.currentRound].entries.map(b => (
-            <RoundTableRow
-              key={b.player.id}
-              name={b.player.name}
-              prediction={b.prediction}
-              stake={b.stake}
-              crashPoint={game?.rounds[game?.currentRound as number].multiplier}
-            />
-          ))}
-        </div>
-      )}
+      <Stack
+        className="bg-neutral-500"
+        gap={4}
+        justifyContent="space-between"
+        px={6}
+        py={2}
+      >
+        <Text className="flex-1 font-semibold" textAlign="center">
+          Player name
+        </Text>
+        <Text className="flex-1 font-semibold" textAlign="center">
+          Prediction
+        </Text>
+        <Text className="flex-1 font-semibold" textAlign="center">
+          Stake
+        </Text>
+      </Stack>
+
+      <div className="max-h-[300px] overflow-y-auto">
+        {["pending", "ongoing"].includes(
+          game?.rounds[game?.currentRound as number].state
+        ) && (
+          <div>
+            {game.rounds[game.currentRound].entries.map(b => (
+              <RoundTableRow
+                key={b.player.id}
+                name={b.player.name}
+                prediction={b.prediction}
+                stake={b.stake}
+              />
+            ))}
+          </div>
+        )}
+        {game?.rounds[game?.currentRound as number].state === "finished" && (
+          <div>
+            {game.rounds[game.currentRound].entries.map(b => (
+              <RoundTableRow
+                key={b.player.id}
+                name={b.player.name}
+                prediction={b.prediction}
+                stake={b.stake}
+                crashPoint={
+                  game?.rounds[game?.currentRound as number].multiplier
+                }
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </Box>
   );
 };

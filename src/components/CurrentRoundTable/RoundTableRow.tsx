@@ -24,9 +24,13 @@ const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
       px={6}
       py={4}
     >
-      <Text>{name}</Text>
-      <Text>{prediction}x</Text>
-      <Stack alignItems="center" gap={2}>
+      <Text className="flex-1" textAlign="center">
+        {name}
+      </Text>
+      <Text className="flex-1" textAlign="center">
+        {prediction}x
+      </Text>
+      <Stack flex={1} justifyContent="center" alignItems="center" gap={2}>
         <FcSalesPerformance />
         {crashPoint ? (
           <Text>

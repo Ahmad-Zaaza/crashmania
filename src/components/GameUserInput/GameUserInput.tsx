@@ -76,10 +76,11 @@ const GameUserInput = () => {
       br="rounded"
       className="relative"
       flexDirection="column"
+      
       gap={6}
     >
       <div>
-        <Text mb={4}>Enter your stake</Text>
+        <Text className="font-bold" mb={4}>Enter your stake</Text>
         <StakeInput
           playerMaxPoints={players?.[0].points as number}
           onChange={handleStakeInput}
@@ -87,7 +88,7 @@ const GameUserInput = () => {
         />
       </div>
       <div>
-        <Text mb={4}>Enter your prediction</Text>
+        <Text mb={4} className="font-bold">Enter your prediction</Text>
         <PredictionInput
           onChange={handlePredictionInput}
           value={prediction.toString(10)}
