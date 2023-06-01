@@ -16,7 +16,7 @@ import {
 import { GameRound } from "@/lib/gameTypes";
 import NextPredictionsCounter from "../Counters/NextPredictionsCounter";
 import NextRoundCounter from "../Counters/NextRoundCounter";
-import { GiTrophy } from "react-icons/gi";
+import { GiRocket, GiTrophy } from "react-icons/gi";
 import GameRankingsTable from "../GameRankingsTable/GameRankingsTable";
 const LeftSide = () => {
   const { data: game } = useGetGame();
@@ -116,7 +116,13 @@ const LeftSide = () => {
           />
         )}
       </Stack>
-      <CurrentRoundTable />
+      <div>
+        <Stack mb={4} gap={2} alignItems="center">
+          <GiRocket size={25} className="text-primary" />
+          <Text>Current Round</Text>
+        </Stack>
+        <CurrentRoundTable />
+      </div>
       <div>
         <Stack mb={4} gap={2} alignItems="center">
           <GiTrophy size={25} className="text-yellow-400" />

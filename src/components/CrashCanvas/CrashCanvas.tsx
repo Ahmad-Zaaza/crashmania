@@ -7,23 +7,20 @@ const CrashCanvas = () => {
   const previousTimeRef = useRef<number | null>(null);
 
   const animate: FrameRequestCallback = time => {
-    console.log({ time });
+    // console.log({ time });
     if (previousTimeRef.current && canvasRef.current) {
       const deltaTime = time - previousTimeRef.current;
+      // update canvas size
+      updateSize();
+
       const width = canvasRef.current.width;
       const height = canvasRef.current.height;
+
       const c = canvasRef.current.getContext("2d") as CanvasRenderingContext2D;
 
-      c.moveTo(0, height);
       c.clearRect(0, 0, width, height);
-      c.fillRect(0, 0, 100, 100);
-      c.beginPath();
-      const newX = positionRef.current;
-      const newY = positionRef.current;
-      c.arc(newX, newY, 25, 0, Math.PI * 2, false);
-
-      c.stroke();
-      positionRef.current += deltaTime / 30;
+      drawAxis(c);
+      drawCircle(c, deltaTime);
     }
 
     previousTimeRef.current = time;
@@ -34,30 +31,54 @@ const CrashCanvas = () => {
     animate(performance.now());
   }
 
-  function draw(c: CanvasRenderingContext2D) {
-    const dpi = window.devicePixelRatio;
-    c.scale(dpi, dpi);
-    // start();
-
-    // for (let index = 0; index < 50; index += 0.1) {
-    //     c.beginPath();
-    //     c.arc(100, 100, 10, 0, Math.PI * 2, false);
-    //     c.stroke();
-    // }
+  function updateSize() {
+    if (canvasRef.current) {
+      canvasRef.current.width = canvasRef.current.parentElement
+        ?.offsetWidth as number;
+      // get height
+      canvasRef.current.height = canvasRef.current.parentElement
+        ?.offsetHeight as number;
+    }
   }
+
+  function drawAxis(c: CanvasRenderingContext2D) {
+    if (canvasRef.current) {
+      const width = canvasRef.current.width;
+      const height = canvasRef.current.height;
+      const nodesCount = width / 100;
+      for (let index = 0; index < nodesCount; index++) {
+        c.font = "16px cursive";
+        c.textAlign = "center";
+        c.fillText(`${index * 3}`, 100 * index + 24, height - 24);
+      }
+    }
+  }
+  function drawCircle(c: CanvasRenderingContext2D, deltaTime: number) {
+    if (canvasRef.current) {
+      const width = canvasRef.current.width;
+      const height = canvasRef.current.height;
+      const radius = 15;
+      const x = positionRef.current + 24;
+      c.fillStyle = "violet";
+      c.arc(x, height - 24 - radius * 3, radius, 0, Math.PI * 2, false);
+      c.fill();
+    }
+    positionRef.current += deltaTime / 30;
+  }
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    const dpi = window.devicePixelRatio;
+    canvasRef.current.getContext("2d")?.scale(dpi, dpi);
+  }, []);
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    draw(canvasRef.current.getContext("2d") as CanvasRenderingContext2D);
+    start();
   }, []);
   return (
-    <canvas
-      ref={canvasRef}
-      className="w-full
-     bg-blue-100 h-[500px]"
-    >
-      CrashCanvas
-    </canvas>
+    <div className="relative h-[500px]">
+      <canvas ref={canvasRef} className="bg-blue-100" />
+    </div>
   );
 };
 
