@@ -1,10 +1,11 @@
 import React from "react";
-import MultiplierGraph from "../MultiplierGraph/MultiplierGraph";
+import CrashCanvas from "../CrashCanvas/CrashCanvas";
 
 const RightSide = () => {
   return (
-    <div className="flex-1">
-      <MultiplierGraph />
+    <div>
+      {/* <MultiplierGraph /> */}
+      <CrashCanvas />
     </div>
   );
 };

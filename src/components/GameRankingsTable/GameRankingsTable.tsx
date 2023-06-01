@@ -12,12 +12,13 @@ const GameRankingsTable = () => {
     },
   });
   return (
-    <Box>
+    <Box paper br="rounded" className="overflow-hidden">
       <Stack
         className="bg-neutral-800"
         gap={4}
         justifyContent="space-between"
-        p={4}
+        py={4}
+        px={6}
       >
         <Text>#</Text>
         <Text>Player</Text>

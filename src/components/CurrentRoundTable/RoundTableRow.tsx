@@ -21,7 +21,8 @@ const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
             : "text-red-500"
           : ""
       } odd:bg-neutral-700 even:bg-neutral-600`}
-      p={4}
+      px={6}
+      py={4}
     >
       <Text>{name}</Text>
       <Text>x{prediction}</Text>

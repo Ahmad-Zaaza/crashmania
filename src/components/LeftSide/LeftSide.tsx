@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import StakeInput from "../StakeInput/StakeInput";
-import { useGameContext } from "@/contexts/GameContext";
 import { Text } from "../Text";
 import { Stack } from "../Stack";
 import { Button } from "../Button";
@@ -20,7 +19,6 @@ import NextRoundCounter from "../Counters/NextRoundCounter";
 import { GiTrophy } from "react-icons/gi";
 import GameRankingsTable from "../GameRankingsTable/GameRankingsTable";
 const LeftSide = () => {
-  const { setSettings, settings } = useGameContext();
   const { data: game } = useGetGame();
 
   const { mutateAsync: updatePlayerEntry } = useUpdatePlayerEntry();
@@ -40,10 +38,6 @@ const LeftSide = () => {
   };
   const handlePredictionInput = (value: string) => {
     setPrediction(parseFloat(value));
-  };
-
-  const handleSpeedChange = (speed: number) => {
-    setSettings(prev => ({ ...prev, speed }));
   };
 
   const onReady = async () => {
@@ -77,14 +71,19 @@ const LeftSide = () => {
 
   if (!game) return null;
   return (
-    <Stack
-      flexDirection="column"
-      p={6}
-      gap={4}
-      paper
-      className="flex-1 rounded-lg"
+    <div
+      // flexDirection="column"
+
+      className="grid gap-6 rounded-lg grid-cols-[repeat(auto-fill,minmax(350px,_1fr))]"
     >
-      <Stack className="relative" flexDirection="column" gap={6}>
+      <Stack
+        paper
+        p={6}
+        br="rounded"
+        className="relative"
+        flexDirection="column"
+        gap={6}
+      >
         <div>
           <Text mb={4}>Enter your stake</Text>
           <StakeInput
@@ -117,13 +116,7 @@ const LeftSide = () => {
           />
         )}
       </Stack>
-      <Divider />
       <CurrentRoundTable />
-      <Divider />
-      <div>
-        <Text mb={4}>Speed</Text>
-        <SpeedController value={settings.speed} onChange={handleSpeedChange} />
-      </div>
       <div>
         <Stack mb={4} gap={2} alignItems="center">
           <GiTrophy size={25} className="text-yellow-400" />
@@ -131,7 +124,7 @@ const LeftSide = () => {
         </Stack>
         <GameRankingsTable />
       </div>
-    </Stack>
+    </div>
   );
 };
 

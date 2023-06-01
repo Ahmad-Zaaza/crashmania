@@ -1,20 +1,20 @@
 import React from "react";
-import { Slider } from "../Slider/slider";
+import { Slider } from "../Slider/Slider";
 import { Stack } from "../Stack";
 import { Text } from "../Text";
 import { useGameContext } from "@/contexts/GameContext";
 
-interface IProps {
-  value: number;
-  onChange: (value: number) => void;
-}
+const SpeedController = () => {
+  const { setSettings, settings } = useGameContext();
 
-const SpeedController = ({ onChange, value }: IProps) => {
+  const handleSpeedChange = (speed: number) => {
+    setSettings(prev => ({ ...prev, speed }));
+  };
   return (
     <div>
       <Slider
-        value={[value]}
-        onValueChange={values => onChange(values[0])}
+        value={[settings.speed]}
+        onValueChange={values => handleSpeedChange(values[0])}
         step={1}
         min={1}
         max={5}

@@ -20,12 +20,13 @@ const CurrentRoundTable = () => {
 
   if (!game) return null;
   return (
-    <Box>
+    <Box className="overflow-hidden" br="rounded" paper>
       <Stack
         className="bg-neutral-800"
         gap={4}
         justifyContent="space-between"
-        p={4}
+        px={6}
+        py={4}
       >
         <Text>
           {game?.rounds[game?.currentRound as number].entries.length} Players

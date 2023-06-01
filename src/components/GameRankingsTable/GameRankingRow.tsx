@@ -15,7 +15,8 @@ const GameRankingRow = ({ player, index }: IProps) => {
       className={`${
         index === 0 ? "text-green-500" : ""
       } odd:bg-neutral-700 even:bg-neutral-600`}
-      p={4}
+      py={4}
+      px={6}
     >
       <Text>{index + 1}</Text>
       <Text>{player.name}</Text>
