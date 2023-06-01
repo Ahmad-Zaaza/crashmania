@@ -5,9 +5,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap");
 @layer base {
   :root {
-    --color-primary: 0deg 89% 75%;
+    --color-primary: 185deg 26% 31%;
     --color-on-primary: 0deg 0% 100%;
-    --color-secondary: 241deg 27% 49%;
+    --color-secondary: 43deg 62% 50%;
     --color-on-secondary: 0deg 0% 100%;
     --color-success: 142deg 71% 45%;
     --color-on-success: 0deg 0% 100%;
@@ -135,6 +135,14 @@ a {
 /* Overriding tailwind preflight */
 input[type="password"]:focus {
   outline-offset: 0;
+}
+
+.canvas-background {
+  background-image: url("/mountain.jpg");
+  background-position: center;
+  background-size: cover;
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 @media (pointer: coarse) {
