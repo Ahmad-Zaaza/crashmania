@@ -39,6 +39,7 @@ async function updatePlayer({
   newPoints: number;
   earnings: number;
 }) {
+  console.log("Update player called");
   return new Promise<Player>(res => {
     return res({ ...player, points: newPoints, earnings });
   });
@@ -62,7 +63,6 @@ export const useUpdatePlayer = () => {
       const playersCopy = queryClient.getQueryData<Player[]>(
         playersQueryKeys.all
       );
-      console.log({ playersCopy });
       if (playersCopy) {
         const playerIndex = playersCopy.findIndex(p => p.id === newPlayer.id);
         if (playerIndex !== -1) {

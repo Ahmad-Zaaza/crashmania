@@ -76,7 +76,7 @@ const StakeInput = ({ onChange, value, playerMaxPoints }: IProps) => {
           variant="outlined"
           size="small"
         >
-          1/2
+          1/2x
         </Button>
         <Button
           onClick={() => onPresetClick("double")}
@@ -86,11 +86,7 @@ const StakeInput = ({ onChange, value, playerMaxPoints }: IProps) => {
         >
           2x
         </Button>
-        <Button
-          onClick={() => onPresetClick("max")}
-          theme="danger"
-          size="small"
-        >
+        <Button onClick={() => onPresetClick("max")} size="small">
           Max
         </Button>
       </Stack>

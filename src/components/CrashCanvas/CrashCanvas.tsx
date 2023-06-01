@@ -184,13 +184,13 @@ const CrashCanvas = () => {
       <div className="canvas-background relative h-[550px]">
         <canvas ref={canvasRef} className="bg-black bg-opacity-50" />
       </div>
-      <Stack gap={2}>
+      {/* <Stack gap={2}>
         <Button onClick={isStopped ? start : stop}>
           {isStopped ? "Start" : "Stop"}
         </Button>
         <Button onClick={reset}>Reset</Button>
         <Text>{currentRound.multiplier}</Text>
-      </Stack>
+      </Stack> */}
     </>
   );
 };

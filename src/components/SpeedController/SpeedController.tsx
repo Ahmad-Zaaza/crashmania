@@ -3,6 +3,7 @@ import { Slider } from "../Slider/Slider";
 import { Stack } from "../Stack";
 import { Text } from "../Text";
 import { useGameContext } from "@/contexts/GameContext";
+import { Box } from "../Box";
 
 const SpeedController = () => {
   const { setSettings, settings } = useGameContext();
@@ -11,7 +12,8 @@ const SpeedController = () => {
     setSettings(prev => ({ ...prev, speed }));
   };
   return (
-    <div>
+    <Box paper px={6} py={4} br="rounded">
+      <Text mb={4}>Game speed</Text>
       <Slider
         value={[settings.speed]}
         onValueChange={values => handleSpeedChange(values[0])}
@@ -26,7 +28,7 @@ const SpeedController = () => {
         <Text>2.5x</Text>
         <Text>3x</Text>
       </Stack>
-    </div>
+    </Box>
   );
 };
 
