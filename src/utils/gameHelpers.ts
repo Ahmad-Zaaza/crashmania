@@ -1,22 +1,22 @@
 import { GameRound, Player, RoundEntry } from "@/lib/gameTypes";
 
-export const generateBotActions = () => {
+export const generateBotActions = (maxPoints: number) => {
   const prediction = generateMultiplier();
-  const stake = +(Math.random() * 10).toFixed(2);
+  const stake = parseFloat((Math.random() * (maxPoints / 1.5)).toFixed(2));
 
   return { prediction, stake };
 };
 export const generateBotEntries = (bots: Player[]) => {
   const botsEntries = bots.map(b => ({
     player: b,
-    ...generateBotActions(),
+    ...generateBotActions(b.points),
   }));
 
   return botsEntries;
 };
 
 export const generateMultiplier = () => {
-  return +(Math.random() * 10).toFixed(2);
+  return parseFloat((Math.random() * 10).toFixed(2));
 };
 
 export const updateRounds = (

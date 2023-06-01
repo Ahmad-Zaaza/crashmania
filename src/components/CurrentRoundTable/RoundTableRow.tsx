@@ -25,13 +25,15 @@ const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
       py={4}
     >
       <Text>{name}</Text>
-      <Text>x{prediction}</Text>
+      <Text>{prediction}x</Text>
       <Stack alignItems="center" gap={2}>
         <FcSalesPerformance />
         {crashPoint ? (
-          <Text>{crashPoint >= prediction ? prediction * stake : 0}</Text>
+          <Text>
+            {crashPoint >= prediction ? (prediction * stake).toFixed(2) : 0}
+          </Text>
         ) : (
-          <Text>{stake}</Text>
+          <Text>{stake.toFixed(2)}</Text>
         )}
       </Stack>
     </Stack>

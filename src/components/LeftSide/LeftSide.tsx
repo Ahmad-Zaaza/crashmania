@@ -3,9 +3,7 @@ import StakeInput from "../StakeInput/StakeInput";
 import { Text } from "../Text";
 import { Stack } from "../Stack";
 import { Button } from "../Button";
-import { Divider } from "../Divider";
 import CurrentRoundTable from "../CurrentRoundTable/CurrentRoundTable";
-import SpeedController from "../SpeedController/SpeedController";
 import PredictionInput from "../PredictionInput/PredictionInput";
 import { useGetGame } from "@/features/game/gameQueries";
 import {
@@ -18,8 +16,12 @@ import NextPredictionsCounter from "../Counters/NextPredictionsCounter";
 import NextRoundCounter from "../Counters/NextRoundCounter";
 import { GiRocket, GiTrophy } from "react-icons/gi";
 import GameRankingsTable from "../GameRankingsTable/GameRankingsTable";
+import { useGetPlayers } from "@/features/players/playersQueries";
+
+
 const LeftSide = () => {
   const { data: game } = useGetGame();
+  const { data: players } = useGetPlayers();
 
   const { mutateAsync: updatePlayerEntry } = useUpdatePlayerEntry();
 
@@ -53,10 +55,10 @@ const LeftSide = () => {
   };
 
   const onPredictionsCounterFinish = useCallback(async () => {
-    if (game) {
-      await createNewRound({ players: [...game.players, ...game.bots] });
+    if (players) {
+      await createNewRound({ players });
     }
-  }, [game, createNewRound]);
+  }, [players, createNewRound]);
 
   const onRoundCounterFinish = useCallback(async () => {
     if (game) {
@@ -87,7 +89,7 @@ const LeftSide = () => {
         <div>
           <Text mb={4}>Enter your stake</Text>
           <StakeInput
-            playerMaxPoints={game?.players[0].points as number}
+            playerMaxPoints={players?.[0].points as number}
             onChange={handleStakeInput}
             value={stake.toString(10)}
           />

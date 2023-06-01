@@ -3,21 +3,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stack } from "../Stack";
 import { Button } from "../Button";
 import { useGetGame } from "@/features/game/gameQueries";
-import { useUpdatePlayer } from "@/features/players/playersMutations";
-import { useGetPlayers } from "@/features/players/playersQueries";
-import { useUpdateGameRound } from "@/features/game/gameMutations";
 import { Text } from "../Text";
+import { useRoundEnd } from "@/hooks/useRoundEnd";
+import { useCurrentRound } from "@/hooks/useCurrentRound";
 
 const ballRadius = 50;
 
 const CrashCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const requestRef = useRef<number | null>(null);
-  const { data: game } = useGetGame();
   const [isStopped, setStopped] = useState(true);
-  const { mutateAsync: updatePlayer } = useUpdatePlayer();
-  const { data: players } = useGetPlayers();
-  const { mutateAsync: updateRound } = useUpdateGameRound();
+  const { onRoundEnd } = useRoundEnd();
+  const { currentRound } = useCurrentRound();
   const ballX = useRef<number>(0);
   const ballY = useRef<number>(0);
   const multiplier = useRef<number>(0);
@@ -42,10 +39,10 @@ const CrashCanvas = () => {
       drawMultiplierAxis(c);
       drawMultiplier(c);
 
-      // if (multiplier.current <= 10 - 0.24) {
-      // }
-      drawCircle(c);
-      if (multiplier.current === game?.rounds[game.currentRound].multiplier) {
+      if (multiplier.current <= 10 - 0.24) {
+        drawCircle(c);
+      }
+      if (multiplier.current === currentRound.multiplier) {
         onCrash();
         return;
       }
@@ -118,7 +115,7 @@ const CrashCanvas = () => {
       const width = canvasRef.current.width;
       const height = canvasRef.current.height;
 
-      c.font = "48px nunito";
+      c.font = "64px nunito";
       c.textAlign = "center";
       c.fillStyle = "white";
       c.fillText(`${multiplier.current}x`, width / 2, height / 2);
@@ -175,44 +172,13 @@ const CrashCanvas = () => {
 
   const onCrash = async () => {
     stop();
-    if (game && players) {
-      await updateRound({
-        round: game?.rounds[game.currentRound],
-        state: "finished",
-        rounds: game.rounds,
-      });
-      for (let index = 0; index < players.length; index++) {
-        const player = players[index];
-        const currentRound = game.rounds[game.currentRound];
-        const playerEntry = currentRound.entries.find(
-          e => e.player.id === player.id
-        );
-        if (playerEntry) {
-          let wonPoints = 0;
-          let newPoints = player.points;
-          if (currentRound.multiplier >= playerEntry.prediction) {
-            wonPoints = playerEntry.prediction * playerEntry.stake;
-            newPoints += wonPoints;
-          } else {
-            wonPoints = -playerEntry.stake;
-            newPoints += wonPoints;
-          }
-          await updatePlayer({
-            player,
-            newPoints,
-            earnings: player.earnings + wonPoints,
-          });
-        }
-      }
-    }
+    onRoundEnd();
   };
   useEffect(() => {
-    if (game) {
-      if (game.rounds[game.currentRound].state === "ongoing") {
-        start();
-      }
+    if (currentRound.state === "ongoing") {
+      start();
     }
-  }, [game]);
+  }, [currentRound]);
   return (
     <>
       <div className="canvas-background relative h-[550px]">
@@ -223,7 +189,7 @@ const CrashCanvas = () => {
           {isStopped ? "Start" : "Stop"}
         </Button>
         <Button onClick={reset}>Reset</Button>
-        {/* <Text>{game.rounds[game.currentRound].multiplier}</Text> */}
+        <Text>{currentRound.multiplier}</Text>
       </Stack>
     </>
   );

@@ -11,10 +11,9 @@ const CurrentRoundTable = () => {
 
   const totalStake = useMemo(() => {
     if (game) {
-      return game.rounds[game.currentRound].entries.reduce(
-        (prev, curr) => prev + curr.stake,
-        0
-      );
+      return game.rounds[game.currentRound].entries.reduce((prev, curr) => {
+        return prev + curr.stake;
+      }, 0);
     }
   }, [game]);
 
@@ -33,7 +32,7 @@ const CurrentRoundTable = () => {
         </Text>
         <Stack alignItems="center" gap={2}>
           <FcSalesPerformance />
-          <Text>{totalStake}</Text>
+          <Text>{totalStake?.toFixed(2)}</Text>
         </Stack>
       </Stack>
       {["pending", "ongoing"].includes(

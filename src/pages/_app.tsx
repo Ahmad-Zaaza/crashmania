@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <Head>
-        <title>Tattle 💭</title>
+        <title>CrashMania 🎲 🎰</title>
         <meta name="description" content="💭" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

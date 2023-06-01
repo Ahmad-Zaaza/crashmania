@@ -62,6 +62,7 @@ export const useUpdatePlayer = () => {
       const playersCopy = queryClient.getQueryData<Player[]>(
         playersQueryKeys.all
       );
+      console.log({ playersCopy });
       if (playersCopy) {
         const playerIndex = playersCopy.findIndex(p => p.id === newPlayer.id);
         if (playerIndex !== -1) {
