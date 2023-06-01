@@ -17,7 +17,8 @@ import {
 import { GameRound } from "@/lib/gameTypes";
 import NextPredictionsCounter from "../Counters/NextPredictionsCounter";
 import NextRoundCounter from "../Counters/NextRoundCounter";
-
+import { GiTrophy } from "react-icons/gi";
+import GameRankingsTable from "../GameRankingsTable/GameRankingsTable";
 const LeftSide = () => {
   const { setSettings, settings } = useGameContext();
   const { data: game } = useGetGame();
@@ -122,6 +123,13 @@ const LeftSide = () => {
       <div>
         <Text mb={4}>Speed</Text>
         <SpeedController value={settings.speed} onChange={handleSpeedChange} />
+      </div>
+      <div>
+        <Stack mb={4} gap={2} alignItems="center">
+          <GiTrophy size={25} className="text-yellow-400" />
+          <Text>Rankings</Text>
+        </Stack>
+        <GameRankingsTable />
       </div>
     </Stack>
   );

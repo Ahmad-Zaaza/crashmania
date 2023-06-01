@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box } from "../Box";
 import { Stack } from "../Stack";
-import { Button } from "../Button";
 import { Text } from "../Text";
 import { useGameContext } from "@/contexts/GameContext";
 import { useGetGame } from "@/features/game/gameQueries";
@@ -56,13 +55,6 @@ const MultiplierGraph = () => {
 
   const start = async () => {
     reset();
-    // if (game) {
-    //   await updateRound({
-    //     round: game?.rounds[game.currentRound],
-    //     state: "ongoing",
-    //     rounds: game.rounds,
-    //   });
-    // }
     setStopped(false);
     animate(performance.now());
   };
@@ -99,13 +91,20 @@ const MultiplierGraph = () => {
           e => e.player.id === player.id
         );
         if (playerEntry) {
+          let wonPoints = 0;
           let newPoints = player.points;
           if (currentRound.multiplier >= playerEntry.prediction) {
-            newPoints += playerEntry.prediction * playerEntry.stake;
+            wonPoints = playerEntry.prediction * playerEntry.stake;
+            newPoints += wonPoints;
           } else {
-            newPoints -= playerEntry.stake;
+            wonPoints = -playerEntry.stake;
+            newPoints += wonPoints;
           }
-          await updatePlayer({ player, newPoints });
+          await updatePlayer({
+            player,
+            newPoints,
+            earnings: player.earnings + wonPoints,
+          });
         }
       }
     }

@@ -10,6 +10,7 @@ async function createPlayer({ bot, name, points }: CreatePlayerProps) {
       name,
       points,
       bot,
+      earnings: 0,
     });
   });
 }
@@ -22,6 +23,7 @@ async function createBots({ count }: { count: number }) {
         points: 1000,
         bot: true,
         name: `CPU ${index + 1}`,
+        earnings: 0,
       });
     }
     return res(bots);
@@ -31,12 +33,14 @@ async function createBots({ count }: { count: number }) {
 async function updatePlayer({
   player,
   newPoints,
+  earnings,
 }: {
   player: Player;
   newPoints: number;
+  earnings: number;
 }) {
   return new Promise<Player>(res => {
-    return res({ ...player, points: newPoints });
+    return res({ ...player, points: newPoints, earnings });
   });
 }
 export const useCreatePlayer = () => {

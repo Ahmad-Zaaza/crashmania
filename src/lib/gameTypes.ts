@@ -3,6 +3,7 @@ export type Player = {
   name: string;
   points: number;
   bot: boolean;
+  earnings: number;
 };
 
 // when we create a game we should initialize the bots.
@@ -46,6 +47,8 @@ export interface IGame {
   currentRound: number;
 }
 
+export type GameRanking = { player: Player };
+
 export interface CreateGameProps {
   players: Player[];
 }
@@ -56,7 +59,6 @@ export interface UpdatePlayerEntryProps {
   prediction: number;
   stake: number;
 }
-
 
 export interface CreatePlayerProps {
   name: string;
