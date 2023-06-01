@@ -1,12 +1,16 @@
-import { useGameRankings } from "@/features/game/gameQueries";
 import React from "react";
 import { Box } from "../Box";
 import { Stack } from "../Stack";
 import { Text } from "../Text";
 import GameRankingRow from "./GameRankingRow";
+import { useGetPlayers } from "@/features/players/playersQueries";
 
 const GameRankingsTable = () => {
-  const { data: rankings } = useGameRankings();
+  const { data: players } = useGetPlayers({
+    select: players => {
+      return players.sort((a, b) => b.points - a.points);
+    },
+  });
   return (
     <Box>
       <Stack
@@ -20,9 +24,9 @@ const GameRankingsTable = () => {
         <Text>Points</Text>
         <Text>Earnings</Text>
       </Stack>
-      {rankings &&
-        rankings.map((r, i) => (
-          <GameRankingRow key={r.player.id} player={r.player} index={i} />
+      {players &&
+        players.map((r, i) => (
+          <GameRankingRow key={r.id} player={r} index={i} />
         ))}
     </Box>
   );
