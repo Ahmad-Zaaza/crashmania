@@ -115,10 +115,10 @@ const CrashCanvas = () => {
       const width = canvasRef.current.width;
       const height = canvasRef.current.height;
 
-      c.font = "64px nunito";
+      c.font = "bold 64px nunito";
       c.textAlign = "center";
       c.fillStyle = "white";
-      c.fillText(`${multiplier.current}x`, width / 2, height / 2);
+      c.fillText(`${multiplier.current.toFixed(2)}x`, width / 2, height / 2);
     }
   }
 
@@ -131,12 +131,6 @@ const CrashCanvas = () => {
 
     updateCanvas();
     function updateCanvas() {
-      // c.clearRect(
-      //   0,
-      //   0,
-      //   canvasRef.current?.width as number,
-      //   canvasRef.current?.height as number
-      // );
       updateSize();
       drawTimeAxis(c);
       drawMultiplierAxis(c);

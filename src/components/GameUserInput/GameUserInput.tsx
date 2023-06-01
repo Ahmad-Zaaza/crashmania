@@ -18,6 +18,9 @@ import { useGetGame } from "@/features/game/gameQueries";
 
 const GameUserInput = () => {
   const { data: players } = useGetPlayers();
+  const { data: humanPlayer } = useGetPlayers({
+    select: players => players.filter(p => !p.bot),
+  });
   const { data: game } = useGetGame();
 
   const { currentRound } = useCurrentRound();
@@ -42,7 +45,7 @@ const GameUserInput = () => {
 
   const onReady = async () => {
     await updatePlayerEntry({
-      playerId: players?.[0].id as string,
+      playerId: humanPlayer?.[0].id as string,
       prediction,
       stake,
       rounds: game?.rounds as GameRound[],
@@ -76,19 +79,22 @@ const GameUserInput = () => {
       br="rounded"
       className="relative"
       flexDirection="column"
-      
       gap={6}
     >
       <div>
-        <Text className="font-bold" mb={4}>Enter your stake</Text>
+        <Text className="font-bold" mb={4}>
+          Enter your stake
+        </Text>
         <StakeInput
-          playerMaxPoints={players?.[0].points as number}
+          playerMaxPoints={humanPlayer?.[0].points as number}
           onChange={handleStakeInput}
           value={stake.toString(10)}
         />
       </div>
       <div>
-        <Text mb={4} className="font-bold">Enter your prediction</Text>
+        <Text mb={4} className="font-bold">
+          Enter your prediction
+        </Text>
         <PredictionInput
           onChange={handlePredictionInput}
           value={prediction.toString(10)}

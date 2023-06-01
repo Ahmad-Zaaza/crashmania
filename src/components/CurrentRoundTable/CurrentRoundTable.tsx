@@ -53,7 +53,7 @@ const CurrentRoundTable = () => {
         </Text>
       </Stack>
 
-      <div className="max-h-[300px] overflow-y-auto">
+      <div className="max-h-[400px] overflow-y-auto">
         {["pending", "ongoing"].includes(
           game?.rounds[game?.currentRound as number].state
         ) && (

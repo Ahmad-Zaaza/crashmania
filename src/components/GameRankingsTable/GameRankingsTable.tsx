@@ -7,14 +7,13 @@ import { useGetPlayers } from "@/features/players/playersQueries";
 import { useGetGame } from "@/features/game/gameQueries";
 
 const GameRankingsTable = () => {
-  const { data: players } = useGetPlayers();
+  const { data: players } = useGetPlayers({
+    select: players => {
+      return players.sort((a, b) => b.points - a.points);
+    },
+  });
   const { data: game } = useGetGame();
 
-  const sortedPlayers = useMemo(() => {
-    if (!players) return [];
-    const newPlayers = [...players];
-    return newPlayers.sort((a, b) => b.points - a.points);
-  }, [players]);
   return (
     <Box paper br="rounded" className="overflow-hidden">
       <Stack
@@ -30,9 +29,6 @@ const GameRankingsTable = () => {
             {(game?.rounds.length as number) - 1}
           </span>
         </Text>
-        {/* <Text className="flex-1" textAlign="center">
-          Stake
-        </Text> */}
       </Stack>
       <Stack
         className="bg-neutral-500"
@@ -45,10 +41,12 @@ const GameRankingsTable = () => {
         <span className="w-[24px]"></span>
         <Text className="flex-[2] font-semibold">Player</Text>
         <Text className="flex-1 font-semibold">Points</Text>
-        <Text className="flex-1 font-semibold" textAlign="center">Earnings</Text>
+        <Text className="flex-1 font-semibold" textAlign="center">
+          Earnings
+        </Text>
       </Stack>
-      <div className="max-h-[300px] overflow-y-auto">
-        {sortedPlayers.map((r, i) => (
+      <div className="max-h-[400px] overflow-y-auto">
+        {players?.map((r, i) => (
           <GameRankingRow key={r.id} player={r} index={i} />
         ))}
       </div>
