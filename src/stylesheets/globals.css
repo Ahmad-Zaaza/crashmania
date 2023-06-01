@@ -3,6 +3,7 @@
 @import "tailwindcss/utilities";
 @import "./utilities/utilities.css";
 @import url("https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap");
 @layer base {
   :root {
     --color-primary: 185deg 26% 31%;
@@ -64,7 +65,7 @@
 html,
 body {
   height: 100%;
-  font-family: cursive;
+  font-family: "Nunito", sans-serif;
 }
 /*
   font-family: "Odibee Sans", cursive;

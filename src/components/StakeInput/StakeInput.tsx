@@ -67,7 +67,7 @@ const StakeInput = ({ onChange, value, playerMaxPoints }: IProps) => {
         onKeyDown={onKeyDown}
         onChange={e => handleStakeInput(e.target.value)}
         className="flex-1"
-        pattern="\d*"
+        pattern="[0-9]*"
       />
       <Stack gap={2}>
         <Button
