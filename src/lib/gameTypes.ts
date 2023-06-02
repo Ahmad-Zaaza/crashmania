@@ -73,3 +73,9 @@ export interface UpdateGameRoundProps {
   rounds: GameRound[];
   state: GameRound["state"];
 }
+
+export type GameMessage = {
+  player: Player;
+  message: string;
+  createdAt: number;
+};

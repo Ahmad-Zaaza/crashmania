@@ -16,26 +16,26 @@ const Logo = () => {
         >
           <path
             xmlns="http://www.w3.org/2000/svg"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M34.651,34.651C45.443,23.861,50.439,11.36,45.81,6.731  c-4.631-4.635-17.138,0.361-27.927,11.153C7.093,28.675,2.097,41.179,6.73,45.808C11.359,50.438,23.863,45.442,34.651,34.651z"
           ></path>
           <path
             xmlns="http://www.w3.org/2000/svg"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M82.113,82.116C92.904,71.326,97.9,58.823,93.27,54.194  c-4.631-4.632-17.129,0.363-27.922,11.156c-10.791,10.791-15.786,23.292-11.158,27.92C58.822,97.903,71.326,92.911,82.113,82.116z"
           ></path>
           <path
             xmlns="http://www.w3.org/2000/svg"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M34.651,65.351C23.863,54.558,11.359,49.562,6.73,54.194  c-4.633,4.629,0.363,17.134,11.153,27.922C28.674,92.911,41.179,97.903,45.81,93.271C50.443,88.639,45.443,76.142,34.651,65.351z"
           ></path>
           <path
             xmlns="http://www.w3.org/2000/svg"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M82.113,17.885C71.326,7.093,58.822,2.096,54.189,6.731  c-4.627,4.629,0.367,17.13,11.158,27.919C76.141,45.442,88.643,50.438,93.27,45.808C97.902,41.177,92.908,28.675,82.113,17.885z"
           ></path>
           <path

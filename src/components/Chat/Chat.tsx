@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text } from "../Text";
 import { useGetPlayers } from "@/features/players/playersQueries";
 import { Stack } from "../Stack";
@@ -6,9 +6,33 @@ import { HiUser } from "react-icons/hi";
 import { Box } from "../Box";
 import ChatInput from "./ChatInput";
 import ChatItem from "./ChatItem";
+import io, { Socket } from "socket.io-client";
+import { GameMessage } from "@/lib/gameTypes";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
+
+let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Chat = () => {
+  const [messages, setMessages] = useState<GameMessage[]>([]);
   const { data: players } = useGetPlayers();
+  useEffect(() => {
+    socketInitializer();
+  }, []);
+
+  const socketInitializer = async () => {
+    // We just call it because we don't need anything else out of it
+    await fetch("/api/socket");
+    socket = io();
+    socket.on("receive-message", msg => {
+      setMessages(prev => [...prev, msg]);
+    });
+  };
+
+  const onMessageSend = (msg: GameMessage) => {
+    console.log("Sending message");
+    socket.emit("send-message", msg);
+  };
+
   return (
     <Box
       p={6}
@@ -26,10 +50,11 @@ const Chat = () => {
         </Stack>
       </Stack>
       <Stack flexDirection="column" gap={6}>
-        <ChatItem createdAt="Now" message="Hello world" player={players[0]} />
-        <ChatItem createdAt="Now" message="Hello world" player={players[0]} />
+        {messages.map(m => (
+          <ChatItem message={m} key={m.createdAt} />
+        ))}
       </Stack>
-      <ChatInput />
+      <ChatInput onMessageSend={onMessageSend} />
     </Box>
   );
 };
