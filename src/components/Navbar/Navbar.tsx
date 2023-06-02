@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import Logo from "../Logo/Logo";
-import UserDropdown from "../UserDropdown/UserDropdown";
 import { Stack } from "../Stack";
-import { FcBusinessman, FcSalesPerformance } from "react-icons/fc";
+import { FcSalesPerformance } from "react-icons/fc";
 import { Text } from "../Text";
 import { useGetPlayers } from "@/features/players/playersQueries";
+import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
 
 function Navbar() {
   const { data: players } = useGetPlayers({
@@ -50,7 +50,12 @@ function Navbar() {
           p={2}
           gap={4}
         >
-          <FcBusinessman size={25} />
+          <Avatar className="bg-primary">
+            <AvatarImage />
+            <AvatarFallback>
+              {players?.[0].name[0].toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
           <Text variant="titleMedium">{players?.[0].name}</Text>
         </Stack>
       </Stack>

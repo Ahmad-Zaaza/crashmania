@@ -13,7 +13,9 @@ const GameRankingRow = ({ player, index }: IProps) => {
       alignItems="center"
       gap={6}
       justifyContent="space-between"
-      className={`odd:bg-neutral-700 even:bg-neutral-600`}
+      className={`${
+        !player.bot ? "text-yellow-400" : ""
+      } odd:bg-neutral-700 even:bg-neutral-600`}
       py={4}
       px={6}
     >

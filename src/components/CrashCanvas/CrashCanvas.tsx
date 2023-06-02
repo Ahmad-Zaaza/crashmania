@@ -1,13 +1,7 @@
 import { useGameContext } from "@/contexts/GameContext";
-import React, { useEffect, useRef, useState } from "react";
-import { Stack } from "../Stack";
-import { Button } from "../Button";
-import { useGetGame } from "@/features/game/gameQueries";
-import { Text } from "../Text";
+import { useEffect, useRef, useState } from "react";
 import { useRoundEnd } from "@/hooks/useRoundEnd";
 import { useCurrentRound } from "@/hooks/useCurrentRound";
-
-const ballRadius = 50;
 
 const CrashCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -58,7 +52,7 @@ const CrashCanvas = () => {
     if (canvasRef.current) {
       const height = canvasRef.current.height;
       const radius = 50;
-      const x = ballX.current + 24;
+      const x = ballX.current + 24 - radius / 2;
       const y = ballY.current + height - 24 - radius / 2;
       const image = new Image();
       image.src = "./rocket.svg";
