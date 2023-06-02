@@ -24,7 +24,7 @@ export interface GameRound {
   id: string;
   state: "pending" | "finished" | "ongoing";
   entries: { player: Player; stake: number; prediction: number }[];
-  multiplier: number;
+  multiplier: number | null;
   crashTime: number;
 }
 
@@ -73,6 +73,7 @@ export interface UpdateGameRoundProps {
   round: GameRound;
   rounds: GameRound[];
   state: GameRound["state"];
+  multiplier: number;
 }
 
 export type GameMessage = {

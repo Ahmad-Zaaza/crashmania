@@ -7,15 +7,19 @@ import { useCountdown } from "usehooks-ts";
 const CrashCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const requestRef = useRef<number | null>(null);
-  const { onRoundEnd } = useRoundEnd();
-  const { currentRound } = useCurrentRound();
-  const ballX = useRef<number>(0);
   const ballY = useRef<number>(0);
-  const countOver = useRef<boolean>(false);
+  const ballX = useRef<number>(0);
   const multiplier = useRef<number>(0);
+
+  const { onRoundEnd } = useRoundEnd(multiplier);
+  const { currentRound } = useCurrentRound();
+
+  const countOver = useRef<boolean>(false);
+  const coords = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const [count, { startCountdown, resetCountdown }] = useCountdown({
     countStart: currentRound.crashTime,
+    // countStart: 30,
     intervalMs: 1000,
   });
 
@@ -26,8 +30,6 @@ const CrashCanvas = () => {
   const animate: FrameRequestCallback = time => {
     if (previousTimeRef.current && canvasRef.current) {
       const deltaTime = time - previousTimeRef.current;
-      // update canvas size
-      updateSize();
 
       const width = canvasRef.current.width;
       const height = canvasRef.current.height;
@@ -40,20 +42,69 @@ const CrashCanvas = () => {
       drawMultiplier(c);
 
       const isDone = countOver.current;
-      if (multiplier.current <= 10 - 0.24) {
-        drawCircle(c, isDone);
-      }
+      drawCircle(c, isDone);
       if (isDone) {
         onCrash();
         return;
       }
-      multiplier.current = parseFloat((ballY.current / 50).toFixed(2)) * -1;
-      ballX.current += deltaTime / 30;
-      ballY.current -= deltaTime * settings.speed * 0.01;
+      multiplier.current = parseFloat((ballY.current / 50).toFixed(2));
+      goTo(coords.current.x, coords.current.y, Math.floor(deltaTime));
+
+      // ballX.current += deltaTime / 30;
+      // ballY.current -= deltaTime * settings.speed * 0.01;
     }
     previousTimeRef.current = time;
     requestRef.current = requestAnimationFrame(animate);
   };
+
+  const goTo = (x: number, y: number, deltaTime: number) => {
+    const currentX = Math.floor(ballX.current);
+    const currentY = Math.floor(ballY.current);
+    // console.log({ y, currentY });
+    // console.log({ x, currentX });
+    if (y !== currentY) {
+      if (y > currentY) {
+        ballY.current += deltaTime * settings.speed * 0.01;
+      } else {
+        ballY.current -= deltaTime * settings.speed * 0.01;
+      }
+    } else {
+      // console.log("BOOM Y");
+      generateNewY();
+    }
+    if (x !== currentX) {
+      if (x > currentX) {
+        ballX.current += (deltaTime * settings.speed) / 30;
+      } else {
+        ballX.current -= (deltaTime * settings.speed) / 30;
+      }
+    } else {
+      // console.log("BOOM X");
+      generateNewX();
+    }
+  };
+
+  function generateNewCoords() {
+    if (canvasRef.current) {
+      const height = canvasRef.current.height;
+      const width = canvasRef.current.width;
+      coords.current.x = Math.floor(Math.random() * width) % width;
+      coords.current.y = Math.floor(Math.random() * height) % height;
+    }
+  }
+  function generateNewX() {
+    if (canvasRef.current) {
+      const width = canvasRef.current.width;
+      coords.current.x = Math.floor(Math.random() * width) % width;
+    }
+  }
+  function generateNewY() {
+    if (canvasRef.current) {
+      const height = canvasRef.current.height;
+
+      coords.current.y = Math.floor(Math.random() * height) % height;
+    }
+  }
 
   function drawCircle(c: CanvasRenderingContext2D, crash: boolean) {
     if (canvasRef.current) {
@@ -64,11 +115,12 @@ const CrashCanvas = () => {
         ballX.current + radius / 2 > width - 24
           ? width - 24 - radius / 1.5
           : ballX.current + 24 - radius / 1.5;
-      const y = ballY.current + height - 24 - radius / 2;
+      const y = -ballY.current + height - 24 - radius / 2;
       const rocket = new Image();
       rocket.src = "./rocket.svg";
       const boom = new Image();
       boom.src = "./boom.png";
+      // c.rotate((20 * Math.PI) / 180);
       rocket.onload = () => {
         if (!crash) {
           c.drawImage(rocket, x, y, radius, radius);
@@ -153,7 +205,7 @@ const CrashCanvas = () => {
       drawTimeAxis(c);
       drawMultiplierAxis(c);
       drawMultiplier(c);
-      drawCircle(c, multiplier.current === currentRound.multiplier);
+      drawCircle(c, countOver.current);
     }
     window.addEventListener("resize", updateCanvas);
     return () => window.removeEventListener("resize", updateCanvas);
@@ -174,6 +226,7 @@ const CrashCanvas = () => {
   const reset = () => {
     stop();
     resetCountdown();
+    generateNewCoords();
 
     if (ballX.current && ballY.current) {
       ballX.current = 0;

@@ -6,7 +6,7 @@ interface IProps {
   name: string;
   prediction: number;
   stake: number;
-  crashPoint?: number;
+  crashPoint?: number | null;
 }
 const RoundTableRow = ({ prediction, name, stake, crashPoint }: IProps) => {
   return (

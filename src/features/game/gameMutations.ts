@@ -71,13 +71,18 @@ async function createGameRound({ players }: CreateGameRoundProps) {
     return res({
       id: generateUUID(),
       state: "pending",
-      multiplier: generateMultiplier(),
+      multiplier: null,
       crashTime: Math.floor(Math.random() * 20 + 1),
       entries: [humanEntry, ...botsEntries],
     });
   });
 }
-async function updateGameRound({ round, state, rounds }: UpdateGameRoundProps) {
+async function updateGameRound({
+  round,
+  state,
+  rounds,
+  multiplier,
+}: UpdateGameRoundProps) {
   return new Promise<GameRound[]>(res => {
     const roundsCopy = [...rounds];
     const roundIndex = roundsCopy.findIndex(r => r.id === round.id);
@@ -89,6 +94,7 @@ async function updateGameRound({ round, state, rounds }: UpdateGameRoundProps) {
       const newRound: GameRound = {
         ...round,
         state,
+        multiplier,
       };
       roundsCopy.splice(roundIndex, 1, newRound);
       res(roundsCopy);
