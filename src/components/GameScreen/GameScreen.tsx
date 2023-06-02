@@ -1,5 +1,5 @@
-import RightSide from "../RightSide/RightSide";
-import LeftSide from "../LeftSide/LeftSide";
+import RightSide from "../TopSide/TopSide";
+import LeftSide from "../BottomSide/BottomSide";
 import Chat from "../Chat/Chat";
 
 const GameScreen = () => {
