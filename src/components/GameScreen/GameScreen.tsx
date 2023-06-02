@@ -4,8 +4,8 @@ import Chat from "../Chat/Chat";
 
 const GameScreen = () => {
   return (
-    <div className="flex gap-8  pt-8 pb-28 md:pb-16 px-4 mt-[80px]">
-      <main className="max-w-[1366px] mx-auto flex-1 flex flex-col gap-8 isolate ">
+    <div className="grid grid-cols-1 xl:grid-cols-[3fr_auto] gap-8 pt-8 pb-28 md:pb-16 px-4 mt-[80px]">
+      <main className="max-w-[1366px] w-full mx-auto flex flex-col gap-8 isolate ">
         <RightSide />
         <LeftSide />
       </main>

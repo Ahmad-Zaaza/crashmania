@@ -38,8 +38,8 @@ const Chat = () => {
       p={6}
       br="rounded"
       paper
-      style={{ gridTemplateRows: "auto 1fr auto" }}
-      className="grid gap-8 basis-[350px]"
+      style={{ gridTemplateRows: "auto 1fr auto", maxBlockSize: "80vh" }}
+      className="grid gap-8 "
     >
       <Stack gap={4} alignItems="center" justifyContent="space-between">
         <Text className="font-bold">Chat</Text>
@@ -49,7 +49,21 @@ const Chat = () => {
           <Text>{players?.length} online</Text>
         </Stack>
       </Stack>
-      <Stack flexDirection="column" gap={6}>
+      <Stack
+        flexDirection="column"
+        style={{
+          maxBlockSize: "100%",
+          overflowY: "auto",
+          paddingInlineEnd: "16px",
+          marginInlineEnd: "-16px",
+        }}
+        gap={6}
+      >
+        {messages.length === 0 && (
+          <Text textAlign="center" className="text-gray-400">
+            No messages to show...
+          </Text>
+        )}
         {messages.map(m => (
           <ChatItem message={m} key={m.createdAt} />
         ))}
