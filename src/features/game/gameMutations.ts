@@ -94,7 +94,7 @@ async function updateGameRound({
       const newRound: GameRound = {
         ...round,
         state,
-        multiplier,
+        multiplier: multiplier || round.multiplier,
       };
       roundsCopy.splice(roundIndex, 1, newRound);
       res(roundsCopy);

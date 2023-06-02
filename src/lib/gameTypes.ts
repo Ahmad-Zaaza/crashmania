@@ -73,7 +73,7 @@ export interface UpdateGameRoundProps {
   round: GameRound;
   rounds: GameRound[];
   state: GameRound["state"];
-  multiplier: number;
+  multiplier?: number;
 }
 
 export type GameMessage = {
