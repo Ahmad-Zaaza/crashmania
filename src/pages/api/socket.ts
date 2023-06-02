@@ -15,7 +15,6 @@ export default function SocketHandler(
   }
 
   const io = new Server((res.socket as any).server);
-  console.log(res.socket);
   (res.socket as any).server.io = io;
   // Define actions inside
   io.on("connection", socket => {

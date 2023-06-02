@@ -72,6 +72,7 @@ async function createGameRound({ players }: CreateGameRoundProps) {
       id: generateUUID(),
       state: "pending",
       multiplier: generateMultiplier(),
+      crashTime: Math.floor(Math.random() * 20 + 1),
       entries: [humanEntry, ...botsEntries],
     });
   });

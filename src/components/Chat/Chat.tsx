@@ -18,7 +18,7 @@ const Chat = () => {
   const { data: players } = useGetPlayers();
   const [connected, setConnected] = useState(false);
   useEffect(() => {
-    socketInitializer();
+    // socketInitializer();
   }, []);
 
   const socketInitializer = async () => {

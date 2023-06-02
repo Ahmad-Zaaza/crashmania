@@ -25,6 +25,7 @@ export interface GameRound {
   state: "pending" | "finished" | "ongoing";
   entries: { player: Player; stake: number; prediction: number }[];
   multiplier: number;
+  crashTime: number;
 }
 
 export interface RoundEntry {

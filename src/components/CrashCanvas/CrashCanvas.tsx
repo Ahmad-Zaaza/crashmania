@@ -2,6 +2,7 @@ import { useGameContext } from "@/contexts/GameContext";
 import { useEffect, useRef, useState } from "react";
 import { useRoundEnd } from "@/hooks/useRoundEnd";
 import { useCurrentRound } from "@/hooks/useCurrentRound";
+import { useCountdown } from "usehooks-ts";
 
 const CrashCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -10,7 +11,13 @@ const CrashCanvas = () => {
   const { currentRound } = useCurrentRound();
   const ballX = useRef<number>(0);
   const ballY = useRef<number>(0);
+  const countOver = useRef<boolean>(false);
   const multiplier = useRef<number>(0);
+
+  const [count, { startCountdown, resetCountdown }] = useCountdown({
+    countStart: currentRound.crashTime,
+    intervalMs: 1000,
+  });
 
   const { settings } = useGameContext();
 
@@ -32,10 +39,11 @@ const CrashCanvas = () => {
       drawMultiplierAxis(c);
       drawMultiplier(c);
 
+      const isDone = countOver.current;
       if (multiplier.current <= 10 - 0.24) {
-        drawCircle(c, multiplier.current === currentRound.multiplier);
+        drawCircle(c, isDone);
       }
-      if (multiplier.current === currentRound.multiplier) {
+      if (isDone) {
         onCrash();
         return;
       }
@@ -152,8 +160,8 @@ const CrashCanvas = () => {
   }, [currentRound.multiplier]);
 
   function start() {
+    countOver.current = false;
     reset();
-
     animate(performance.now());
   }
 
@@ -165,6 +173,7 @@ const CrashCanvas = () => {
   };
   const reset = () => {
     stop();
+    resetCountdown();
 
     if (ballX.current && ballY.current) {
       ballX.current = 0;
@@ -180,8 +189,15 @@ const CrashCanvas = () => {
   useEffect(() => {
     if (currentRound.state === "ongoing") {
       start();
+      startCountdown();
     }
   }, [currentRound]);
+
+  useEffect(() => {
+    if (count === 0) {
+      countOver.current = true;
+    }
+  }, [count]);
   return (
     <>
       <div className="canvas-background relative h-[550px]">
