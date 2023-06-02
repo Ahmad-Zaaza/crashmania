@@ -6,7 +6,6 @@ import { useCurrentRound } from "@/hooks/useCurrentRound";
 const CrashCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const requestRef = useRef<number | null>(null);
-  const [isStopped, setStopped] = useState(true);
   const { onRoundEnd } = useRoundEnd();
   const { currentRound } = useCurrentRound();
   const ballX = useRef<number>(0);
@@ -34,7 +33,7 @@ const CrashCanvas = () => {
       drawMultiplier(c);
 
       if (multiplier.current <= 10 - 0.24) {
-        drawCircle(c);
+        drawCircle(c, multiplier.current === currentRound.multiplier);
       }
       if (multiplier.current === currentRound.multiplier) {
         onCrash();
@@ -48,18 +47,35 @@ const CrashCanvas = () => {
     requestRef.current = requestAnimationFrame(animate);
   };
 
-  function drawCircle(c: CanvasRenderingContext2D, animate = true) {
+  function drawCircle(c: CanvasRenderingContext2D, crash: boolean) {
     if (canvasRef.current) {
       const height = canvasRef.current.height;
-      const radius = 50;
-      const x = ballX.current + 24 - radius / 2;
+      const width = canvasRef.current.width;
+      const radius = crash ? 100 : 50;
+      const x =
+        ballX.current + radius / 2 > width - 24
+          ? width - 24 - radius / 1.5
+          : ballX.current + 24 - radius / 1.5;
       const y = ballY.current + height - 24 - radius / 2;
-      const image = new Image();
-      image.src = "./rocket.svg";
-      image.onload = () => {
-        c.drawImage(image, x, y, 50, 50);
+      const rocket = new Image();
+      rocket.src = "./rocket.svg";
+      const boom = new Image();
+      boom.src = "./boom.png";
+      rocket.onload = () => {
+        if (!crash) {
+          c.drawImage(rocket, x, y, radius, radius);
+        }
       };
-      c.drawImage(image, x, y, 50, 50);
+      boom.onload = () => {
+        if (crash) {
+          c.drawImage(boom, x, y, radius, radius);
+        }
+      };
+      if (crash) {
+        c.drawImage(boom, x, y, radius, radius);
+      } else {
+        c.drawImage(rocket, x, y, radius, radius);
+      }
     }
   }
 
@@ -129,21 +145,20 @@ const CrashCanvas = () => {
       drawTimeAxis(c);
       drawMultiplierAxis(c);
       drawMultiplier(c);
-      drawCircle(c);
+      drawCircle(c, multiplier.current === currentRound.multiplier);
     }
     window.addEventListener("resize", updateCanvas);
     return () => window.removeEventListener("resize", updateCanvas);
-  }, []);
+  }, [currentRound.multiplier]);
 
   function start() {
     reset();
-    setStopped(false);
+
     animate(performance.now());
   }
 
   const stop = () => {
     if (requestRef.current && previousTimeRef.current) {
-      setStopped(true);
       previousTimeRef.current = 0;
       cancelAnimationFrame(requestRef.current);
     }

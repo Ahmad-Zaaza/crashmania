@@ -39,7 +39,6 @@ async function updatePlayer({
   newPoints: number;
   earnings: number;
 }) {
-  console.log("Update player called");
   return new Promise<Player>(res => {
     return res({ ...player, points: newPoints, earnings });
   });

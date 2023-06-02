@@ -39,8 +39,8 @@ const Chat = () => {
   useEffect(() => {
     if (players && connected) {
       const bots = players?.filter(p => p.bot);
-      const minInterval = 2000; // Minimum interval in milliseconds
-      const maxInterval = 5000; // Maximum interval in milliseconds
+      const minInterval = 3000; // Minimum interval in milliseconds
+      const maxInterval = 10000; // Maximum interval in milliseconds
 
       const send = () => {
         const duration =
@@ -51,7 +51,9 @@ const Chat = () => {
           player: bots[Math.floor(Math.random() * bots.length)],
           message: botMessages[Math.floor(Math.random() * 30)],
         });
-        setTimeout(send, duration);
+        if (messages.length < 20) {
+          setTimeout(send, duration);
+        }
       };
       const initialDuration =
         Math.random() * (maxInterval - minInterval) + minInterval;
