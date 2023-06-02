@@ -9,29 +9,56 @@ import ChatItem from "./ChatItem";
 import io, { Socket } from "socket.io-client";
 import { GameMessage } from "@/lib/gameTypes";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { botMessages } from "@/lib/botMessages";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Chat = () => {
   const [messages, setMessages] = useState<GameMessage[]>([]);
   const { data: players } = useGetPlayers();
+  const [connected, setConnected] = useState(false);
   useEffect(() => {
     socketInitializer();
   }, []);
 
   const socketInitializer = async () => {
-    // We just call it because we don't need anything else out of it
     await fetch("/api/socket");
     socket = io();
+    socket.on("connect", () => {
+      setConnected(true);
+    });
     socket.on("receive-message", msg => {
-      setMessages(prev => [...prev, msg]);
+      setMessages(prev => [msg, ...prev]);
     });
   };
 
   const onMessageSend = (msg: GameMessage) => {
-    console.log("Sending message");
     socket.emit("send-message", msg);
   };
+
+  useEffect(() => {
+    if (players && connected) {
+      const bots = players?.filter(p => p.bot);
+      const minInterval = 2000; // Minimum interval in milliseconds
+      const maxInterval = 5000; // Maximum interval in milliseconds
+
+      const send = () => {
+        const duration =
+          Math.random() * (maxInterval - minInterval) + minInterval;
+
+        onMessageSend({
+          createdAt: new Date().getTime(),
+          player: bots[Math.floor(Math.random() * bots.length)],
+          message: botMessages[Math.floor(Math.random() * 30)],
+        });
+        setTimeout(send, duration);
+      };
+      const initialDuration =
+        Math.random() * (maxInterval - minInterval) + minInterval;
+      const timeout = setTimeout(send, initialDuration);
+      return () => clearTimeout(timeout);
+    }
+  }, [connected, players]);
 
   return (
     <Box
@@ -39,7 +66,7 @@ const Chat = () => {
       br="rounded"
       paper
       style={{ gridTemplateRows: "auto 1fr auto", maxBlockSize: "80vh" }}
-      className="grid gap-8 "
+      className="grid gap-8 xl:max-w-[450px] "
     >
       <Stack gap={4} alignItems="center" justifyContent="space-between">
         <Text className="font-bold">Chat</Text>
@@ -50,7 +77,7 @@ const Chat = () => {
         </Stack>
       </Stack>
       <Stack
-        flexDirection="column"
+        flexDirection="column-reverse"
         style={{
           maxBlockSize: "100%",
           overflowY: "auto",

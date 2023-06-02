@@ -20,7 +20,7 @@ const ChatItem = ({ message: { createdAt, message, player } }: IProps) => {
           variant="bodyLarge"
           className={`${
             !player.bot ? "text-yellow-400" : "text-slate-300"
-          } flex-1 line-clamp-1 max-w-[200px] font-bold`}
+          } flex-1 line-clamp-1  font-bold`}
         >
           {player.name}
         </Text>
