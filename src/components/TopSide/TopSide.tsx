@@ -12,13 +12,13 @@ const RightSide = () => {
       <CrashCanvas />
       <Stack flexDirection="column" gap={8}>
         <GameUserInput />
-        <div>
+        {/* <div>
           <Stack mb={4} gap={2} alignItems="center">
             <FcSettings size={25} className="text-primary" />
             <Text className="font-bold">Game settings</Text>
           </Stack>
           <SpeedController />
-        </div>
+        </div> */}
       </Stack>
     </div>
   );

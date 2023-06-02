@@ -24,7 +24,7 @@ interface IProps {
 }
 
 const GameContextProvider: React.FC<IProps> = ({ children }) => {
-  const [settings, setSettings] = useState<GameSettings>({ speed: 1 });
+  const [settings, setSettings] = useState<GameSettings>({ speed: 2.5 });
 
   const providerValue = useMemo(() => {
     return {

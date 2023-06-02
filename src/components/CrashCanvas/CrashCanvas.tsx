@@ -95,14 +95,18 @@ const CrashCanvas = () => {
   function generateNewX() {
     if (canvasRef.current) {
       const width = canvasRef.current.width;
-      coords.current.x = Math.floor(Math.random() * width) % width;
+      // within the boundaries of the graph + padding + rocket radius
+      coords.current.x =
+        (Math.floor((Math.random() * width) / 4) % width) + 24 + 50 / 2;
     }
   }
   function generateNewY() {
     if (canvasRef.current) {
       const height = canvasRef.current.height;
 
-      coords.current.y = Math.floor(Math.random() * height) % height;
+      // within the boundaries of the graph + padding + step (the step between 0x and 1x)
+      coords.current.y =
+        (Math.floor((Math.random() * height) / 4) % height) + 24 + 50;
     }
   }
 
